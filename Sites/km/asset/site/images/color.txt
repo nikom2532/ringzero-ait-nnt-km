@@ -1,0 +1,22 @@
+bg: #e9e5f3
+
+bg-menu-active: #caabf7
+
+border-img: #cbcac8
+
+button-color: #9e61a9
+
+font-color: #868686
+
+pagination-color: #4d207b
+pagination-border: #cecece
+
+Text-footer-color: #caacf7
+
+
+Text-left-Title-cat1: #4d207b, #9e61a9
+Text-left-category: #4d207b
+
+
+color-hard:#4d207b
+color-light :#9e61a9

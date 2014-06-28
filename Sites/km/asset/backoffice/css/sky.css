@@ -1,0 +1,42 @@
+#login-wrapper #login-top {
+				background: url('../images/header_gray.png') top left no-repeat ;
+}
+
+div.torry_dialog{
+	color: #0080FF;
+}
+
+div#dialog_torry{
+	color: #0080FF;
+}
+
+a              { color: #0080FF; }
+                
+.button {
+                background: #0080FF url('../images/bg-button-sky.gif') top left repeat-x !important;
+                border-color: #0080FF !important;
+
+                }
+
+#sidebar #main-nav li a.nav-top-item {
+                background: transparent url('../images/bg-menu-item-sky.gif') right center no-repeat;
+                }
+
+ul.content-box-tabs li a:hover {
+                color: #0080FF;
+                }              
+                
+.pagination strong {
+				 background: #004a95 url('../images/bg-button-sky.gif') top left repeat-x !important;
+                border-color: #0080FF !important;
+				margin-left:3px; /*Edit by Pack*/
+				border: 1px solid #ddd; /*Edit by Pack*/
+                margin: 0 3px 0 0; /*Edit by Pack*/
+                padding: 3px 6px;
+				color: #fff;
+                }
+				
+.action-button span:hover {
+				color: #0080FF;0; 
+                }
+
