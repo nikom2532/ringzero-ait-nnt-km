@@ -28,7 +28,7 @@
                             <div class="row-contactus-site">
                                 <div class="contactus-website">
                                     <label class="highlight  bold">Website : </label>
-                                    <a href="<?php echo $row->ADD_web; ?>" title="<?php echo $row->ADD_web; ?>" target="_blank" class="contactus-link"><?php echo $row->ADD_web; ?></a>,
+                                    <a href="<?php echo $row->ADD_web; ?>" title="<?php echo $row->ADD_web; ?>" target="_blank" class="contactus-link"><?php echo $row->ADD_web; ?></a>
                                 </div>
                                 <div class="contactus-email">
                                     <label class="highlight  bold">Email : </label>
@@ -127,7 +127,6 @@ $(document).ready(function() {
 			$('#loadcontact').show();
 			//("hello");
 			$.post("<?php echo site_url('site/contact_us/inquiry'); ?>", $("#contactform").serialize(),function(data){
-					
 					$('#loadcontact').hide();		
 					$('#btcontact').show();
 					$("#formemail").val("");
@@ -135,7 +134,7 @@ $(document).ready(function() {
 					$("#formtopic").val("");
 					$("#formname").val("");
 					$("#formmessage").val("");
-					alert(data);	
+					//alert(data);	
 					<?php if($this->uri->segment(1)=="en"){ ?>
 					alert("Thank you for massage.");						
 					<?php }else{ ?>

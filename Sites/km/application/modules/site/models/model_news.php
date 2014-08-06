@@ -28,6 +28,13 @@ class Model_news extends MY_Model
 		$query = $db2->get("KM_news");
 		return $query->result(); 	
 	}
+	function get_cover($id){
+		$db2 = $this->load->database('articledb', TRUE);		
+		$db2->where("NG_news_ref",$id);
+		$db2->limit(1);
+		$query = $db2->get("KM_news_gallery");
+		return $query->result(); 	
+	}
 	function get_resent($id=NULL,$cat=NULL){
 		$db2 = $this->load->database('articledb', TRUE);			
 		$db2->where("N_id<> '".$id."'");

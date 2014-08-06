@@ -36,10 +36,10 @@ class Contact_us extends MY_Controller {
 			$insertid = $this->model_home->contact_add($data);
 			 
 			 //send for admin
-			$email_admin = $this->model_home->contact_getmail();
-			$topic_admin = " (ติดต่อ) ระบบห้องสมุดข่าวสารและองค์ความรู้สำหรับประชาชน";
+			//$email_admin = $this->model_home->contact_getmail();
+			//$topic_admin = " (ติดต่อ) ระบบห้องสมุดข่าวสารและองค์ความรู้สำหรับประชาชน";
 
-			$detail_admin= '
+			/*$detail_admin= '
 							<table width="700" border="0" x:str cellpadding="0" cellspacing="0">
 								<tr><td colspan="2" height="85" ></td></tr>
 								
@@ -56,11 +56,11 @@ class Contact_us extends MY_Controller {
 									<td style="background:#EEE">ข้อความ : </td><td>'.htmlencode($this->input->post('formtopic')).'</td>
 								</tr>
 							</table>
-						';
+						';*/
 			//$this->sending($email_admin->SM_mail,$topic_admin."<noreply>",$detail_admin);
 
 			//send for user
-			$email_user =htmlencode($this->input->post('formemail'));
+			/*$email_user =htmlencode($this->input->post('formemail'));
 			
 				$detail_txt = "ขอบคุณสำหรับคำแนะนำและคำถามครับ";
 				$detail= '
@@ -71,7 +71,7 @@ class Contact_us extends MY_Controller {
 								</tr>
 							</table>
 						';
-		
+		*/
 			//$this->sending($email_user,$topic_admin,$detail);
 			////////////////////////////////////////////  end send mail /////////////////////////////////////////////////////////////
 			

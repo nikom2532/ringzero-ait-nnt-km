@@ -39,19 +39,22 @@ $txtcat = $cat->CAT_topic; ?>
                                 <img src="<?php echo base_url()."asset/site/"; ?>images/tag.png" alt="img">
                             </h2>
                         </div>
+                        <?php  if($rows->ATC_tag != ""){ ?>
                         <div class="box-sidebar-contents">
                             <ul class="tags">
                             <?php
-						   if($rows->ATC_tag != ""){
+						  
 								$arr = explode(",",$rows->ATC_tag);
 								foreach($arr as $ar){ 
-									echo '<li><a href="'.site_url('site/article/tagfilter/'.$ar).'">'.$ar.'</a></li>';
+									$txtarr = urlencode($ar);
+									echo '<li><a href="'.site_url('site/article/tagfilter/'.encode_url($ar)).'">'.$ar.'</a></li>';
 								}
-						   }
+						   
 						   ?>
           
                             </ul>
                         </div>
+                        <?php } ?>
                     </div>
                 </div>
 
@@ -61,7 +64,7 @@ $txtcat = $cat->CAT_topic; ?>
                             <div class="article">
                                 <div class="details">
                                     <div class="image">
-                                        <a href="<?php echo site_url('site/article/detail/'.$rows->ATC_id); ?>" title="<?php echo $rows->ATC_title; ?>"><img src="<?php echo site_url('uploads/article/image/'.$rows->ATC_image); ?>" width="150"/></a>
+                                        <a href="<?php echo site_url('site/article/detail/'.$rows->ATC_id); ?>" title="<?php echo $rows->ATC_title; ?>"><img src="<?php echo site_url('uploads/article/image/'.$rows->ATC_image); ?>" width="150" height="95"/></a>
                                     </div>
                                     <div class="refference">
                                         <p>
@@ -86,18 +89,20 @@ $txtcat = $cat->CAT_topic; ?>
                                <center> <?php echo ($rows->ATC_video != "" ? '
 						  <a href="'.base_url().'uploads/article/video/'.$rows->ATC_video.'" style="display:block;width:640px;height:480px;" id="playerflow"></a>' : '') ?>
                           </center>
-                                <p><?php echo htmldecode($rows->ATC_desc); ?></p>
+                                <?php echo htmldecode($rows->ATC_desc); ?>
 
                                 <!-- Comments Footer Massage
                                 <div class="footer-details">
                                     <p class="highlight  bold">จรูญ พิตะพันธ์ รายงาน</p>
                                 </div>
                                 -->
+                                <?php if($rows->ATC_tag!="") { ?>
                                 <p>
-                                            <span>tag : <?php echo $rows->ATC_tag;  ?> </span>
+                                            <span>Tag : <?php echo $rows->ATC_tag;  ?> </span>
                                            
                                             
                                         </p>
+                                <?php } ?>
                             </div>
                             
                             <?php /*?><div class="box-gallery">
@@ -145,7 +150,7 @@ $txtcat = $cat->CAT_topic; ?>
                             <div class="article">
                                 <div class="details">
                                     <div class="image">
-                                        <img src="<?php echo site_url('uploads/article/image/'.$resent->ATC_image); ?>" width="150"/>
+                                        <img src="<?php echo site_url('uploads/article/image/'.$resent->ATC_image); ?>" width="150" height="95"/>
                                     </div>
                                     <div class="refference">
                                         <p>
@@ -158,9 +163,9 @@ $txtcat = $cat->CAT_topic; ?>
                                         <?php } ?>
                                     </div>
                                     <h3 class="article-title">
-                                        <a href="<?php echo site_url('site/article/detail/'.$resent->ATC_id); ?>" title="<?php echo $resent->ATC_title; ?>" class="highlight  bold"><?php echo $resent->ATC_title; ?></a>
+                                        <a href="<?php echo site_url('site/article/detail/'.$resent->ATC_id); ?>" title="<?php echo $resent->ATC_title; ?>" class="highlight  bold"><?php echo cut_word($resent->ATC_title,200); ?></a>
                                     </h3>
-                                    <p>  <?php echo htmldecode(iconv_substr(nl2br($rows->ATC_short_desc),0,400, "UTF-8")); ?></p>
+                                    <p>  <?php echo htmldecode(cut_word($rows->ATC_short_desc,500)); ?></p>
                                 </div>
                             </div><!-- .article -->  
 						<?php 

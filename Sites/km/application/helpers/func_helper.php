@@ -1,4 +1,15 @@
 <?php
+function encode_url($url){
+  $base_64 = base64_encode($url);
+  $url_param = rtrim($base_64, '=');
+  $url_param = str_replace(array('+', '/'), array(',', '-'), $url_param);
+  return $url_param;}
+  function decode_url($url){
+   $base_64 = $url.str_repeat('=', strlen($url) % 4);
+   $base_64 = str_replace(array(',', '-'), array('+', '/'), $base_64);
+   $data = base64_decode($base_64);       
+   return $data;
+}
 	function authen($set){
 		$result = "";
 		$set = trim($set);
@@ -131,7 +142,7 @@
                                                           ['Styles','Format','Font','FontSize'],'/',
 														  		['Bold','Italic','Underline','StrikeThrough','-','Undo','Redo','-','Cut','Copy','Paste','Find','Replace','-','Outdent','Indent','-','Print'],'/',
 														['NumberedList','BulletedList','-','JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock'],
-														['Image','Table','-','Link','Flash','Smiley','TextColor','BGColor','Source']
+														['Image','Table','-','Link','Iframe','Flash','Smiley','TextColor','BGColor','Source']
 							],
 							skin : 'kama',
 							extraPlugins : 'uicolor',
@@ -161,5 +172,16 @@
 		{
 			return html_entity_decode($str);
 		}
+	}
+	function cut_word($str,$numtxt){
+		$counttxt = strlen($str);
+		$txt = substr($str,0,$numtxt);
+		$arr = explode(" ",$txt);
+		$count = count($arr);
+		if($counttxt>$numtxt){
+			$arr[$count-1] = " ...";
+		}
+		$result = implode(" ",$arr);
+		return $result;
 	}
 ?>

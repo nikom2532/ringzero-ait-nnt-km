@@ -8,11 +8,11 @@ class News extends MY_Controller {
 		$this->load->model('site/model_news');
 		
 		$this->template->set_layout('site/layout/template')
-			->css('asset/site/css/lightbox.css')
-			 ->css('asset/backoffice/css/ui-lightness/jquery-ui-1.8.24.custom.css')
-			 ->js('asset/backoffice/js/jquery-ui-1.8.24.custom.min.js')
-			->js('asset/site/js/jquery.min.js')
-			->js('asset/site/js/lightbox.min.js');
+			//->css('asset/site/css/lightbox.css')
+			// ->css('asset/backoffice/css/ui-lightness/jquery-ui-1.8.24.custom.css')
+			// ->js('asset/backoffice/js/jquery-ui-1.8.24.custom.min.js')
+			->js('asset/site/js/jquery.min.js');
+			//->js('asset/site/js/lightbox.min.js');
 			$this->template->set_layout('site/layout/template')	
 			->set_view('footer','site/include/footer')
 			->set_view('some_script','site/include/some_script')
@@ -47,10 +47,25 @@ class News extends MY_Controller {
 		 $this->pagination->initialize($config); 
 		 
 		 $data['rows'] = $this->model_news->get_ac(NULL,$config['per_page'],$this->uri->segment(5));
-		 
+		
+		 if(!empty($data['rows'])){
+			 foreach($data['rows'] as $row) :
+			 $rowpic = $this->model_news->get_cover($row->N_id);
+			 if(!empty($rowpic)){
+			 	$value[$row->N_id] = $rowpic[0]->NG_ThumbnailUrl;
+			 }else{
+				 $value[$row->N_id] = site_url('asset/site/images/picDefalt.png');
+			 }
+			
+			 endforeach;
+		 }
+
+		$data['newspic']= $value;
+		
 		$data['pagination'] =  $this->pagination->create_links();
 		$data['totalrow'] = $config['total_rows'];
 		 $data['categorys']  = $this->model_news->get_category();
+		  $data['cate']  = $this->model_news->get_category();
 		$this->template->build('site/news/news',$data);
 	}
 	
@@ -78,9 +93,36 @@ class News extends MY_Controller {
 	public function detail($param1=NULL){
 		$rows =  $this->model_news->get_id($param1);
 		$data['resent'] = $this->model_news->get_resent($param1,$rows[0]->N_category_ref);
+		 if(!empty($data['resent'])){
+			 foreach($data['resent'] as $row) :
+			 $rowpic = $this->model_news->get_cover($row->N_id);
+			 if(!empty($rowpic)){
+			 	$value[$row->N_id] = $rowpic[0]->NG_ThumbnailUrl;
+			 }else{
+				 $value[$row->N_id] = site_url('asset/site/images/picDefalt.png');
+			 }
+			
+			 endforeach;
+		 }
+
+		$data['newsrepic']= $value;
+		
 		$data['gal'] = $this->model_news->get_gal($param1);
 		$data['categorys']  = $this->model_news->get_category();
 		$data['rows'] =  $this->model_news->get_id($param1);
+		if(!empty($data['rows'])){
+			 foreach($data['rows'] as $rownews) :
+			 $rowpicnew = $this->model_news->get_cover($rownews->N_id);
+			 if(!empty($rowpicnew)){
+			 	$value[$rownews->N_id] = $rowpicnew[0]->NG_ThumbnailUrl;
+			 }else{
+				 $value[$rownews->N_id] = site_url('asset/site/images/picDefalt.png');
+			 }
+			
+			 endforeach;
+		 }
+
+		$data['newspic']= $value;
 		$this->template->build('site/news/news-detail',$data);
 	}
 	public function category($param1=NULL){
@@ -115,7 +157,23 @@ class News extends MY_Controller {
 		 $this->pagination->initialize($config); 
 		 
 		 $data['rows'] = $this->model_news->get_ac($txt,$config['per_page'],$this->uri->segment(6));
+		 
+		 if(!empty($data['rows'])){
+			 foreach($data['rows'] as $row) :
+			 $rowpic = $this->model_news->get_cover($row->N_id);
+			 if(!empty($rowpic)){
+			 	$value[$row->N_id] = $rowpic[0]->NG_ThumbnailUrl;
+			 }else{
+				 $value[$row->N_id] = site_url('asset/site/images/picDefalt.png');
+			 }
+			
+			 endforeach;
+		 }
+
+		$data['newspic']= $value;
+		 
 		 $data['categorys']  = $this->model_news->get_category();
+		  $data['cate']  = $this->model_news->get_category();
 		$data['pagination'] =  $this->pagination->create_links();
 		$data['totalrow'] = $config['total_rows'];
 		$this->template->build('site/news/news',$data);
@@ -151,7 +209,23 @@ class News extends MY_Controller {
 		 $this->pagination->initialize($config); 
 		 
 		 $data['rows'] = $this->model_news->get_tag($txt,$this->session->userdata("search_catagory_news"),$config['per_page'],$this->uri->segment(6));
+		 
+		 if(!empty($data['rows'])){
+			 foreach($data['rows'] as $row) :
+			 $rowpic = $this->model_news->get_cover($row->N_id);
+			 if(!empty($rowpic)){
+			 	$value[$row->N_id] = $rowpic[0]->NG_ThumbnailUrl;
+			 }else{
+				 $value[$row->N_id] = site_url('asset/site/images/picDefalt.png');
+			 }
+			
+			 endforeach;
+		 }
+
+		$data['newspic']= $value;
+		 
 		 $data['categorys']  = $this->model_news->get_category();
+		  $data['cate']  = $this->model_news->get_category();
 		$data['pagination'] =  $this->pagination->create_links();
 		$data['totalrow'] = $config['total_rows'];
 		$this->template->build('site/news/news',$data);
@@ -194,8 +268,22 @@ class News extends MY_Controller {
 		 
 		 $data['rows'] = $this->model_news->search_ac($txt,$this->session->userdata("search_catagory_news"),$config['per_page'],$this->uri->segment(5));
 		 
-		 $data['categorys']  = $this->model_news->get_category();
+		 if(!empty($data['rows'])){
+			 foreach($data['rows'] as $row) :
+			 $rowpic = $this->model_news->get_cover($row->N_id);
+			 if(!empty($rowpic)){
+			 	$value[$row->N_id] = $rowpic[0]->NG_ThumbnailUrl;
+			 }else{
+				 $value[$row->N_id] = site_url('asset/site/images/picDefalt.png');
+			 }
+			
+			 endforeach;
+		 }
+
+		$data['newspic']= $value;
 		 
+		 $data['categorys']  = $this->model_news->get_category();
+		  $data['cate']  = $this->model_news->get_category();
 		 $data['pagination'] =  $this->pagination->create_links();
 		 $data['totalrow'] = $config['total_rows'];
 		 $this->template->build('site/news/news',$data);
@@ -259,8 +347,22 @@ class News extends MY_Controller {
 		 
 		 $data['rows'] = $this->model_news->search_advance($txt,$txtdatestart,$txtdatestop,$txtcat,$config['per_page'],$this->uri->segment(5));
 		 
-		 $data['categorys']  = $this->model_news->get_category();
+		 if(!empty($data['rows'])){
+			 foreach($data['rows'] as $row) :
+			 $rowpic = $this->model_news->get_cover($row->N_id);
+			 if(!empty($rowpic)){
+			 	$value[$row->N_id] = $rowpic[0]->NG_ThumbnailUrl;
+			 }else{
+				 $value[$row->N_id] = site_url('asset/site/images/picDefalt.png');
+			 }
+			
+			 endforeach;
+		 }
+
+		$data['newspic']= $value;
 		 
+		 $data['categorys']  = $this->model_news->get_category();
+		  $data['cate']  = $this->model_news->get_category();
 		 $data['pagination'] =  $this->pagination->create_links();
 		 $data['totalrow'] = $config['total_rows'];
 		 $this->template->build('site/news/news',$data);

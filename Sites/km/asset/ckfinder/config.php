@@ -71,7 +71,7 @@ Examples:
 
 ATTENTION: The trailing slash is required.
 */
-$baseUrl = 'http://localhost/km/uploads/ckeditor/'.$_SESSION['DIR_SELF'].'/';
+$baseUrl = 'http://km.aitproject.com/uploads/ckeditor/'.$_SESSION['DIR_SELF'].'/';
 
 /*
 $baseDir : the path to the local directory (in the server) which points to the
@@ -90,7 +90,7 @@ Examples:
 
 ATTENTION: The trailing slash is required.
 */
-$baseDir = resolveUrl('/km/uploads/ckeditor/'.$_SESSION['DIR_SELF'].'/');//resolveUrl($baseUrl);
+$baseDir = resolveUrl('/uploads/ckeditor/'.$_SESSION['DIR_SELF'].'/');//resolveUrl($baseUrl);
 
 /*
  * ### Advanced Settings

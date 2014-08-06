@@ -1,11 +1,11 @@
 	<div class="bg-nav-footer">
             <div class="nav-footer  wrapper">
                 <ul>
-                    <li><a href="#" title="หน้าหลัก KM">หน้าหลัก KM</a>|</li>
-                    <li><a href="#" title="ข่าว/ข่าวสาร">ข่าว/ข่าวสาร</a>|</li>
-                    <li><a href="#" title="บทความ">บทความ</a>|</li>
-                    <li><a href="#" title="คำถามที่พบบ่อย">คำถามที่พบบ่อย</a>|</li>
-                    <li class="last"><a href="#" title="ติดต่อเรา">ติดต่อเรา</a></li>
+                    <li><a href="<?php echo site_url("site/home"); ?>" title="หน้าหลัก KM">หน้าหลัก KM</a>|</li>
+                    <li><a href="<?php echo site_url("site/news"); ?>" title="ข่าว/ข่าวสาร">ข่าว/ข่าวสาร</a>|</li>
+                    <li><a href="<?php echo site_url("site/article"); ?>" title="บทความ">บทความ</a>|</li>
+                    <li><a href="<?php echo site_url("site/faq"); ?>" title="คำถามที่พบบ่อย">คำถามที่พบบ่อย</a>|</li>
+                    <li class="last"><a href="<?php echo site_url("site/contact_us"); ?>" title="ติดต่อเรา">ติดต่อเรา</a></li>
                 </ul>
             </div>
         </div>

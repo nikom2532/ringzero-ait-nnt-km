@@ -10,7 +10,7 @@ echo '<?xml version="1.0" encoding="utf-8"?>
 				 foreach($rows as $row) :
 ?>   
 <article>
-	<title><?php echo $row->ATC_title; ?></title>
+	<title><?php echo htmlencode($row->ATC_title); ?></title>
     <cover><?php echo site_url('uploads/article/image/'.$row->ATC_image); ?></cover>
     <writer><?php echo $row->ATC_writer;  ?></writer>
 	<date><?php echo th_date($row->ATC_date->format('Y-m-d'));  ?></date>

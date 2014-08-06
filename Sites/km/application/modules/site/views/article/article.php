@@ -42,17 +42,28 @@
                         <div class="box-sidebar-contents">
                             <form name="form-date-search" class="form-date-search" method="post" action="<?php echo site_url('site/article/toparticle'); ?>">
 								<div class="rows">
-									<label>เดือน</label>    
+									<label>เดือน</label>
 									<!--
                                     <select name="select-year" class="select-date">
 										<option value=""> - เลือกปี - </option>
 									</select>
                                     -->
                                     <div class="box-select-opt">
-                                    
+                                    <?php 
+									if($this->session->userdata("month_top")!=""){
+										$monthselect = $this->session->userdata("month_top");
+									}else{
+										$monthselect = date("m");
+									}
+									if($this->session->userdata("year_top")!=""){
+										$yearselect = $this->session->userdata("year_top");
+									}else{
+										$yearselect = date("Y");
+									}
+									?>
                                     <?php
 									$style2 = 'style="width:160px"';
-								echo form_dropdown('month_toparticle',$months, $this->session->userdata("month_top"), $style2);
+								echo form_dropdown('month_toparticle',$months, $monthselect, $style2);
 								?>
                                         <?php /*?><div class="bg-select-option"></div>
                                         <input id="select-year" type="text" name="cat" class="txt-field  select-option" value="">
@@ -73,7 +84,7 @@
                                     <div class="box-select-opt">     
                                     <?php
                                     $style2 = 'style="width:160px"';
-								echo form_dropdown('year_toparticle',$years, $this->session->userdata("year_top"), $style2);            
+								echo form_dropdown('year_toparticle',$years, $yearselect, $style2);            
 								?>               
                                         <?php /*?><input id="select-month" type="text" name="cat" class="txt-field  select-option" value="">
                                         <div class="bg-select-option"></div>
@@ -117,8 +128,16 @@
                 <div class="right-sidebar">
                     <div id="news" class="box-article">
                         <div class="box-article-header">
-                            <h2>
-                                <img src="<?php echo base_url()."asset/site/"; ?>images/economic-tourism.png" alt="img">
+                            <h2 class="title">
+                                <span class="highlight">บทความ</span>
+                               
+                                <?php if(!empty($cate)){ foreach($cate as $cat) : ?>   
+								<?php 
+                                if($cat->CAT_id==$this->uri->segment(5)){
+                                	echo $cat->CAT_topic; }
+									 ?>
+                                
+                                <?php endforeach; } ?>
                                  <?php if($this->session->userdata("search_catagory_news")==""){ ?>
 							  
 							  <a href="<?php echo site_url('site/article/rss'); ?>" class="icon"><img src="<?php echo base_url()."asset/site/"; ?>images/rss.png"></a>
@@ -132,19 +151,23 @@
                         <?php
 								 if(!empty($rows)){
 										 foreach($rows as $row) :
+										 if($row->ATC_id!=""){
+										 
 						?>   
                             <div class="article">
                                 <div class="details">
                                     <div class="image">
-                                        <a href="<?php echo site_url('site/article/detail/'.$row->ATC_id); ?>" title="<?php echo $row->ATC_title; ?>"><img src="<?php echo site_url('uploads/article/image/'.$row->ATC_image); ?>" width="150"/></a>
+                                        <a href="<?php echo site_url('site/article/detail/'.$row->ATC_id); ?>" title="<?php //echo $row->ATC_title; ?>"><img src="<?php echo site_url('uploads/article/image/'.$row->ATC_image); ?>" width="151" height="95"/></a>
                                     </div>
                                     <div class="refference">
                                         <p>
                                             <span>ผู้เขียน : <?php echo $row->ATC_writer; ?> | </span>
                                             <span>ผู้เข้าชม : <?php echo $row->ATC_viewall; ?> | </span>
                                             <span><?php echo th_date($row->ATC_date->format('Y-m-d'));  ?></span>
+                                             <?php if($row->ATC_tag!=""){ ?>
                                              <br />
-tag : <?php echo str_replace($this->session->userdata("search_tag"),"*".$this->session->userdata("search_tag")."*",$row->ATC_tag);  ?>
+
+Tag : <?php echo str_replace($this->session->userdata("search_tag"),"*".$this->session->userdata("search_tag")."*",$row->ATC_tag); } ?>
                                         </p>
                                         
                                         <?php if($row->ATC_writer_ref!=""&&$row->ATC_writer_ref!="0"){ ?>
@@ -155,21 +178,22 @@ tag : <?php echo str_replace($this->session->userdata("search_tag"),"*".$this->s
                                       
                                     </div>
                                     <h3 class="article-title">
-                                        <a href="<?php echo site_url('site/article/detail/'.$row->ATC_id); ?>" title="<?php echo $row->ATC_title; ?>" class="highlight  bold"><?php echo $row->ATC_title; ?></a>
+                                        <a href="<?php echo site_url('site/article/detail/'.$row->ATC_id); ?>" title="<?php echo $row->ATC_title; ?>" class="highlight  bold"><?php echo cut_word($row->ATC_title,200); ?></a>
                                     </h3>
                                     <p><?php //echo $row->ATC_short_desc; ?>
-                                    <?php echo htmldecode(iconv_substr(nl2br($row->ATC_short_desc),0,400, "UTF-8")); ?>...
+                                    <?php echo htmldecode(cut_word($row->ATC_short_desc,500)); ?>
                                     </p>
                                 </div>
                                 
                             </div><!-- .article -->  
 						<?php 
+										 }
 								endforeach;
 						 }
 						 ?>
                             <div class="box-pagination">
                             <?php if(isset($totalrow)){ ?>
-                                <p class="total-pages">ทั้งหมด: <span><?php echo $totalrow; ?></span> รายการ </p>
+                                <p class="total-pages">ทั้งหมด: <span><?php  if(empty($rows)){ echo "0"; }else{echo $totalrow;} ?></span> รายการ </p>
                                 <?php echo $pagination; ?>
                            <?php } ?>    
                             </div>

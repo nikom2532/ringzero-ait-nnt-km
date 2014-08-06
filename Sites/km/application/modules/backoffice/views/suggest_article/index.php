@@ -72,11 +72,29 @@
 <div id="dialogk" title="คำแนะนำ"></div>
 <?php echo form_close();  ?>
 <script type="text/javascript">
+
 			$(function(){
 				
-					$( "#date-start" ).datepicker({ dateFormat: "yy-mm-dd" });
-					$( "#date-end" ).datepicker({ dateFormat: "yy-mm-dd" });
-				
+					//$( "#date-start" ).datepicker({ dateFormat: "yy-mm-dd" });
+					//$( "#date-end" ).datepicker({ dateFormat: "yy-mm-dd",minDate:mdate() });
+					$( "#date-start" ).datepicker({
+					  defaultDate: "+1w",
+					  changeMonth: true,
+					  numberOfMonths: 2,
+					  onClose: function( selectedDate ) {
+						$( "#date-end" ).datepicker( "option", "minDate", selectedDate );
+					  }
+					});
+					$( "#date-end" ).datepicker({
+					  defaultDate: "+1w",
+					  changeMonth: true,
+					  numberOfMonths: 2,
+					  onClose: function( selectedDate ) {
+						$( "#date-start" ).datepicker( "option", "maxDate", selectedDate );
+					  }
+					});
+					
+					
 					$('#chkboxall').change(function(){
 								if($('#chkboxall') .attr( 'checked' )){
 												$('input[type=checkbox]').attr('checked','checked');

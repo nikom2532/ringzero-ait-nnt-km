@@ -111,13 +111,13 @@
 								$('#grid').submit();
 							}
 					});
-					$('select[name="status"]').change(function(){
+					/*$('select[name="status"]').change(function(){
 							if (confirm("คุณต้องการเปลี่ยนสถานะบทความหรือไม่ ?")) {
-								window.location.href = "<?php echo site_url("backoffice/approve_article/change_status") ?>/"+$(this).data("x1")+"/"+$(this).val()+"/<?php echo str_replace("/","-",current_url()) ?>";
+								window.location.href = "< ?php echo site_url("backoffice/approve_article/change_status") ?>/"+$(this).data("x1")+"/"+$(this).val()+"/< ?php echo str_replace("/","-",current_url()) ?>";
 							}else{
-								window.location.href = "<?php echo site_url("backoffice/approve_article") ?>";
+								window.location.href = "< ?php echo site_url("backoffice/approve_article") ?>";
 							}
-					});
+					});*/
 			});
 			
 			function delete_data()

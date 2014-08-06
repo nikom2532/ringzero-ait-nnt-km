@@ -425,14 +425,14 @@ class Article extends MY_Controller {
 			 $del_data = $param1;
 			 $row = $this->model_article->get_for_update($del_data);
 			 $this->unlink_pic($row->ATC_image);
-			 $this->model_topic->delete_ac($del_data);
+			 $this->model_article->delete_ac($del_data);
 			 $this->session->set_flashdata('success','การลบข้อมูลสำเร็จ');
 			 redirect('backoffice/article/index','location');
 		}
 	} 
 	
 	public function unlink_pic($pic){
-		unlink($this->path_upload.'image/'.$pic);
+		@unlink($this->path_upload.'article/'.$pic);
 	}
 	
 	

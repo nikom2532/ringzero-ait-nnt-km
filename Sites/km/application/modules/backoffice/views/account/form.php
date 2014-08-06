@@ -71,7 +71,7 @@
             <p>
                   <label>สิทธิ์การเข้าถึงข้อมูล ( <font color="#FF0000">***</font> )</label>
                   		<span style="width:80%;margin-bottom:35px">
-                        <span style="width:100%;float:left;padding:5px"><input type="checkbox" id="chkboxall" value="" /></span>
+                        <span style="width:100%;float:left;padding:5px"><input type="checkbox" id="chkboxall" value="" /> ทั้งหมด</span>
                         <span style="width:23%;float:left;padding:5px"><input type="checkbox" name="menu_chk[]" value="ผู้ดูแลระบบ" 
                         <?php 
 							 if(!empty($result)){

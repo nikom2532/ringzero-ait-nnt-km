@@ -148,7 +148,7 @@ class Model_article extends MY_Model
 				$this->db->order_by("ATC_date","desc");
 				$this->db->limit($offset,$limit);
 				$query = $this->db->get("article");
-				//echo $this->db->last_query();
+				//echo $this->db->last_query(); exit;
 				return $query->result(); 
 				//return $this->db->last_query();
 			} else {

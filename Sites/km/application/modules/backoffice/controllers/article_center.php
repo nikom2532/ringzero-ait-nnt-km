@@ -28,7 +28,7 @@ class Article_center extends MY_Controller {
 					$this->session->set_flashdata('error','กรุณากรอกข้อมูลผู้ใช้ใหม่');
 					redirect('backoffice/login','location');
 			}
-			if(!in_array("article",explode(",",$this->session->userdata('session_menu'))) && $this->session->userdata('session_menu') != "ALL"){
+			if(!in_array("Article",explode(",",$this->session->userdata('session_menu'))) && $this->session->userdata('session_menu') != "ALL"){
 				    $this->session->set_flashdata('error','ไม่อนุญาตให้เข้าใช้งาน');
 					redirect('backoffice/profile','location');
 		    }
@@ -65,7 +65,7 @@ class Article_center extends MY_Controller {
 
 		 $this->template
 		 ->set_view('notices','backoffice/include/notices')
-		 ->set_view('shortcut','backoffice/include/shortcutarticle')
+		 ->set_view('shortcut','backoffice/include/shortcutarticlecopy')
 		 ->set_view('search','backoffice/include/searcharticle_center',$data)
 		 ->build('backoffice/article_center/index',$data);
 	}

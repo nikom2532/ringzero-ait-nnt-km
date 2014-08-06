@@ -30,7 +30,7 @@
                   </p>
                   
                   <p>
-                      <label>คุณภาพ ( <font color="#FF0000">***</font> )</label>
+                      <label>ระดับคุณภาพของบทความ ( <font color="#FF0000">***</font> )</label>
                       <?php
 					 $quality = array(
 					     '' => '--- กรุณาเลือกคุณภาพของบทความ ---',
@@ -90,7 +90,7 @@
                                         $data = array(
                                                 'name' => 'ATC_short_desc',
                                                 'id' => 'ATC_short_desc',
-                                                'value' =>  (empty($ref) ? set_value('ATC_short_desc') : set_value('ATC_short_desc',htmldecode($ref->N_desc))),
+                                                'value' =>  (empty($ref) ? set_value('ATC_short_desc') : set_value('ATC_short_desc',substr($ref->N_desc,19))),
                                                 'rows'   => '5',
                                                  'cols'        => '100'
                                             );
@@ -173,7 +173,7 @@
                           </p>
                   <?php } ?>
                   <p>
-                      <label>Tags</label>
+                      <label>Tags </label>
                           <?php 
                                         $data = array(
                                                 'name' => 'ATC_tag',
@@ -185,7 +185,7 @@
                                         echo form_textarea($data);
                                         //echo form_editor($result['id']);
                            ?> 
-                  </p>
+                  </p>[ ในกรณีที่ต้องการใส่มากกว่าหนึ่งคำค้นให้ใช้เครื่องหมาย "," คั่นในแต่ละคำ เช่น กีฬา,เรือใบ,ชิงแชมป์โลก  ]
                   
                   <p>
                     <?php

@@ -43,7 +43,7 @@ class Approve_article extends MY_Controller {
 		
 		 $config["base_url"] = base_url()."backoffice/approve_article/index";
 		 $config['total_rows'] =  $this->model_approve_article->get_ac();
-		 $config['per_page'] = '40'; 
+		 $config['per_page'] = '20'; 
 		 $config['num_links'] = '5'; 
 		 $config['uri_segment'] = 5;
 		 $config['full_tag_open'] = '<div class="pagination">';
@@ -145,7 +145,7 @@ class Approve_article extends MY_Controller {
 				 
 		 $config["base_url"] = base_url()."backoffice/approve_article/search";
 		 $config['total_rows'] =  $this->model_approve_article->search_ac($txt,$category,$status,$start,$end);
-		 $config['per_page'] = '40'; 
+		 $config['per_page'] = '20'; 
 		 $config['num_links'] = '5'; 
 		 $config['uri_segment'] = 5;
 		 $config['full_tag_open'] = '<div class="pagination">';

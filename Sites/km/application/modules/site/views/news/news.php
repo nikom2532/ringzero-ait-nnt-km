@@ -4,6 +4,7 @@
                         <li>ข่าว/ข่าวสาร</li>
                     </ul>
                 </div>
+                
 
                 <div class="box-search-news">
                     <form name="search-news" method="post" class="form-search-news" action="<?php echo site_url('site/news/search'); ?>">
@@ -64,8 +65,16 @@
                 <div class="right-sidebar">
                     <div id="news" class="box-article">
                         <div class="box-article-header">
-                            <h2>
-                                <img src="<?php echo base_url()."asset/site/"; ?>images/news-public.png" alt="img">
+                            <h2 class="title">
+                            <span class="highlight">ข่าว</span>
+                                <?php if(!empty($cate)){ foreach($cate as $cat) : ?>   
+								<?php 
+                                if($cat->C_id==$this->uri->segment(5)){
+                                	echo $cat->C_topic; }
+									 ?>
+                                
+                                <?php endforeach; } ?>
+                                <?php /*?><img src="<?php echo base_url()."asset/site/"; ?>images/news-public.png" alt="img"><?php */?>
                               <?php if($this->session->userdata("search_catagory_news")==""){ ?>
 							  
 							  <a href="<?php echo site_url('site/news/rss'); ?>" class="icon"><img src="<?php echo base_url()."asset/site/"; ?>images/rss.png"></a>
@@ -83,7 +92,7 @@
                                 <div class="details">
                                     <div class="image">
                                         <a href="<?php echo site_url('site/news/detail/'.$row->N_id); ?>" title="<?php echo $row->N_title; ?>">
-                                        <img src="<?php echo site_url('uploads/article/image/'); ?>" onerror="this.src='<?php echo site_url('asset/site/images/picDefalt.png'); ?>';" width="150">
+                                        <img src="<?php echo $newspic[$row->N_id]; ?>" onerror="this.src='<?php echo site_url('asset/site/images/picDefalt.png'); ?>';" width="151" height="95">
                                         </a>
                                     </div>
                                     <div class="refference">
@@ -95,9 +104,9 @@
                                         </p>
                                     </div>
                                     <h3 class="article-title">
-                                        <a href="<?php echo site_url('site/news/detail/'.$row->N_id); ?>" title="<?php echo $row->N_title; ?>" class="highlight  bold"><?php echo $row->N_title; ?></a>
+                                        <a href="<?php echo site_url('site/news/detail/'.$row->N_id); ?>" title="<?php echo $row->N_title; ?>" class="highlight  bold"><?php echo cut_word($row->N_title,200); ?></a>
                                     </h3>
-                                    <p><?php echo htmldecode(iconv_substr(nl2br($row->N_desc),0,400, "UTF-8")); ?>...
+                                    <p><?php echo htmldecode(cut_word(substr($row->N_desc,19),500)); ?>
                                     <?php //echo $row->N_desc; ?>
                                     </p>
                                 </div>

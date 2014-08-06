@@ -1,3 +1,6 @@
+<?php
+header("Content-Type: text/html; charset=utf-8");   // ส่งค่าเป็น xml
+?>
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 /* Coding by : alongkorn@codeworks.co.th */
 class Article extends MY_Controller {
@@ -31,7 +34,7 @@ class Article extends MY_Controller {
 		
 		$data['rows'] = $this->model_article->get_rssac($param1);
 		$categorys  = $this->model_article->get_categoryid($param1);
-		$data['topicrss'] = "บทความ : ".$categorys[0]->C_topic;
+		$data['topicrss'] = "บทความ : ".$categorys[0]->CAT_topic;
 		 $this->load->view('site/rss/article',$data);
 	}
 	public function index(){
@@ -265,8 +268,12 @@ class Article extends MY_Controller {
 		$this->template->build('site/article/article',$data);
 	}
 	public function tagfilter($param1=NULL){
+		//echo "พระราชสำนัก"; exit;
 		if($param1 != ""){
-				$txt = urldecode($param1);
+				//$txt = iconv("windows-874","UTF-8",$param1);
+				//$txt = $param1;
+				//echo $txt; exit;
+				$txt = decode_url($param1);
 				$this->session->set_userdata("search_tag",$txt);
 		}else{
 			$txt  = $this->session->userdata("search_tag");

@@ -11,6 +11,7 @@ echo '<?xml version="1.0" encoding="utf-8"?>
 ?>   
 <news>
 	<title><?php echo $row->N_title; ?></title>
+    <picture><?php echo $newspic[$row->N_id]; ?></picture>
     <writer><?php echo $row->N_writer;  ?></writer>
 	<date><?php echo th_date($row->N_date->format('Y-m-d'));  ?></date>
 	<link><?php echo site_url('site/news/detail/'.$row->N_id); ?></link>

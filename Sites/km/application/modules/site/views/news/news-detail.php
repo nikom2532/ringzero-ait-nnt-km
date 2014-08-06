@@ -42,7 +42,7 @@ $txtcat = $cat->C_topic; ?>
                             <div class="article">
                                 <div class="details">
                                     <div class="image">
-                                    <img src="<?php echo site_url('uploads/article/image/'); ?>" onerror="this.src='<?php echo site_url('asset/site/images/picDefalt.png'); ?>';" width="150">
+                                    <img src="<?php echo $newspic[$rows->N_id]; ?>" onerror="this.src='<?php echo site_url('asset/site/images/picDefalt.png'); ?>';" height="95" width="150">
                                        <?php /*?> <a href="<?php echo site_url('site/article/detail/'.$rows->N_id); ?>" title="<?php echo $rows->N_title; ?>"><img src="<?php echo site_url('uploads/article/image/'.$rows->ATC_image); ?>" width="150"/></a><?php */?>
                                     </div>
                                     <div class="refference">
@@ -112,7 +112,7 @@ $txtcat = $cat->C_topic; ?>
                             <div class="article">
                                 <div class="details">
                                     <div class="image">
-                                        <img src="<?php echo site_url('uploads/article/image/'); ?>" onerror="this.src='<?php echo site_url('asset/site/images/picDefalt.png'); ?>';" width="150">
+                                        <img src="<?php echo $newsrepic[$resent->N_id]; ?>" onerror="this.src='<?php echo site_url('asset/site/images/picDefalt.png'); ?>';" width="150" height="95">
                                     </div>
                                     <div class="refference">
                                         <span>ผู้เขียน : <?php echo $resent->N_writer;  ?> | </span>
@@ -120,9 +120,9 @@ $txtcat = $cat->C_topic; ?>
                                             <span><?php echo th_date($resent->N_date->format('Y-m-d'));  ?></span>
                                     </div>
                                     <h3 class="article-title">
-                                        <a href="<?php echo site_url('site/news/detail/'.$resent->N_id); ?>" title="<?php echo $resent->N_title; ?>" class="highlight  bold"><?php echo $resent->N_title; ?></a>
+                                        <a href="<?php echo site_url('site/news/detail/'.$resent->N_id); ?>" title="<?php echo $resent->N_title; ?>" class="highlight  bold"><?php echo cut_word($resent->N_title,200); ?></a>
                                     </h3>
-                                    <p><?php echo htmldecode(iconv_substr(nl2br($resent->N_desc),0,400, "UTF-8")); ?>...</p>
+                                    <p><?php echo htmldecode(cut_word($resent->N_desc,450)); ?></p>
                                 </div>
                             </div><!-- .article -->  
 						<?php 

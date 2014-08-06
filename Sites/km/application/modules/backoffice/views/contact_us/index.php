@@ -13,7 +13,7 @@
 			< ?php echo form_checkbox(array('name'=>'chkboxall','id'=>'chkboxall','value'=>'all')); ?></th>
             <th scope="col" class="rounded" style="text-align:center">Order</th>-->
             <th scope="col" class="rounded" width="190">ผู้ติดต่อ</th>         
-            <th scope="col" class="rounded">อ่านข้อความ</th>
+            <th scope="col" class="rounded">ข้อความ</th>
             <th scope="col" class="rounded" style="text-align:center" width="100">วันที่ส่งข้อความ</th>
             <th scope="col" class="rounded-q4" style="text-align:center">เครื่องมือ</th>
         </tr>
@@ -31,10 +31,12 @@
                                         </td>-->
                                         <td><?php echo $row->CONT_name.br(1).'('.$row->CONT_email; ?>)</td>                                       
                                         <td>
-                                       			 <div style="cursor:pointer" id="dialog_torry" data-x1="<?php echo $row->CONT_name; ?>" data-x2="<?php echo $row->CONT_email; ?>"
+                                        <p>โทรศัพท์ : <?php echo $row->CONT_tel; ?></p>
+                                        <p>ข้อความ : <?php echo $row->CONT_message; ?></p>
+                                       			 <?php /*?><div style="cursor:pointer" id="dialog_torry" data-x1="<?php echo $row->CONT_name; ?>" data-x2="<?php echo $row->CONT_email; ?>"
                                                   data-x3="<?php echo $row->CONT_tel; ?>"  data-x4="<?php echo $row->CONT_message; ?>" >
                                                  		อ่านข้อความ
-                                                 </div>
+                                                 </div><?php */?>
                                         </td>
                                         <td style="text-align:center"><?php echo th_date($row->CONT_add->format('Y-m-d H:i:s'));  ?></td>
                                         <td style="text-align:center">
