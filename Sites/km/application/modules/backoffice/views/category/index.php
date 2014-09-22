@@ -42,7 +42,7 @@
                                         <td style="text-align:center">
                                         <?php echo anchor("backoffice/category/edit/".$row->CAT_id,
 										"<img src='".site_url('asset/backoffice/images/icons/edit.png')."'/>")."&nbsp;".
-										anchor("backoffice/category/delete/".$row->CAT_id,"<img src='".site_url('asset/backoffice/images/icons/delete.png')."'/>",array('onclick' => 'return delete_data()')); ?></td>
+										anchor("backoffice/category/delete/".$row->CAT_id,"<img src='".site_url('asset/backoffice/images/icons/delete.png')."'/>",array('onclick' => 'return delete_data()'))?></td>
                                     </tr>
       <?php 
 						endforeach; 

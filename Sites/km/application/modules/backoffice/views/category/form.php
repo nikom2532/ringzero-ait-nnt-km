@@ -24,7 +24,7 @@
                           value="<?php echo (empty($result) ? 999 : $result->CAT_order ); ?>" />
                   </p>
                   
-                  <p>
+                 <p>
                     <?php
                           $chk = 1;
                           if(!empty($result)){

@@ -5,7 +5,22 @@ class Model_article_center extends MY_Model
 	{
 		$this->load->database();
 	}
-	
+	function get_cover($id){
+		$db2 = $this->load->database('articledb', TRUE);		
+		$db2->where("NG_news_ref",$id);
+		$db2->limit(1);
+		$query = $db2->get("KM_news_gallery");
+		return $query->result(); 	
+	}
+	function get_viewsid($id){
+		//$query = $this->db->query("SELECT COUNT(NV_ref) FROM dbo.news_view WHERE dbo.news_view.NV_ref  = '".$id."' ");
+		$this->db->select("COUNT(NV_ref) AS MyCount");
+		$this->db->from("news_view");
+		$this->db->where("NV_ref", $id);
+		$query = $this->db->get();
+		return $query->result();
+		//return $this->db->last_query(); 
+	}
 	function get_category(){			
 		$db2 = $this->load->database('articledb', TRUE);	
 		$db2->where("C_status","Y");

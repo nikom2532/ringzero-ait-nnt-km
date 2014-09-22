@@ -1,11 +1,11 @@
 <script src="<?php echo base_url()."asset/flowplayer/" ?>flowplayer-3.2.11.min.js"></script>
-<?php if(!empty($rows)){ foreach($rows as $rows) : ?>   
-
-<?php endforeach; } ?>
-
+<?php if(!empty($rows)){ foreach($rows as $row) : ?>   
+<?php endforeach; }else{?>
+<meta http-equiv="refresh" content="0">
+<?php } ?>
 <?php if(!empty($categorys)){ foreach($categorys as $cat) : ?>   
 <?php 
-if($cat->CAT_id==$rows->ATC_category_ref)
+if($cat->CAT_id==$row->ATC_category_ref)
 $txtcat = $cat->CAT_topic; ?>
 <?php endforeach; } ?>
 <div class="content">
@@ -28,7 +28,7 @@ $txtcat = $cat->CAT_topic; ?>
                         <div class="box-sidebar-contents">
                             <ul class="news-link">
                                 <?php if(!empty($categorys)){ foreach($categorys as $categorys) : ?>   
-                                <li <?php if($categorys->CAT_id==$rows->ATC_category_ref) echo 'class="active"'; ?>><a href="<?php echo site_url('site/article/category/'.$categorys->CAT_id); ?>"><?php echo $categorys->CAT_topic; ?></a></li>
+                                <li <?php if($categorys->CAT_id==$row->ATC_category_ref) echo 'class="active"'; ?>><a href="<?php echo site_url('site/article/category/'.$categorys->CAT_id); ?>"><?php echo $categorys->CAT_topic; ?></a></li>
                                 <?php endforeach; } ?>
                             </ul>
                         </div><!-- .box-article-contents -->
@@ -39,12 +39,12 @@ $txtcat = $cat->CAT_topic; ?>
                                 <img src="<?php echo base_url()."asset/site/"; ?>images/tag.png" alt="img">
                             </h2>
                         </div>
-                        <?php  if($rows->ATC_tag != ""){ ?>
+                        <?php  if($row->ATC_tag != ""){ ?>
                         <div class="box-sidebar-contents">
                             <ul class="tags">
                             <?php
 						  
-								$arr = explode(",",$rows->ATC_tag);
+								$arr = explode(",",$row->ATC_tag);
 								foreach($arr as $ar){ 
 									$txtarr = urlencode($ar);
 									echo '<li><a href="'.site_url('site/article/tagfilter/'.encode_url($ar)).'">'.$ar.'</a></li>';
@@ -64,21 +64,25 @@ $txtcat = $cat->CAT_topic; ?>
                             <div class="article">
                                 <div class="details">
                                     <div class="image">
-                                        <a href="<?php echo site_url('site/article/detail/'.$rows->ATC_id); ?>" title="<?php echo $rows->ATC_title; ?>"><img src="<?php echo site_url('uploads/article/image/'.$rows->ATC_image); ?>" width="150" height="95"/></a>
+                                        <a href="<?php echo site_url('site/article/detail/'.$row->ATC_id); ?>" title="<?php echo $row->ATC_title; ?>"><img src="<?php echo str_replace(";","",$row->ATC_image); ?>" onerror="this.src='<?php echo site_url('asset/site/images/picDefalt.png'); ?>';" width="151" height="95"/></a>
                                     </div>
                                     <div class="refference">
                                         <p>
-                                            <span>ผู้เขียน : <?php echo $rows->ATC_writer;  ?> | </span>
-                                            <span>ผู้เข้าชม : <?php echo $rows->ATC_viewall; ?> | </span>
-                                            <span><?php echo th_date($rows->ATC_date->format('Y-m-d'));  ?></span>
-                                            
+                                            <span>ผู้เขียน : <?php echo $row->ATC_writer;  ?> | </span>
+                                            <span>ผู้เข้าชม : <?php echo $row->ATC_viewall; ?> | </span>
+                                            <span><?php echo th_date($row->ATC_date->format('Y-m-d'));  ?></span>
+                                             <span> &nbsp;&nbsp;
+                                            <?php for($i=1;$i<=$row->ATC_quality;$i++){ ?>
+												<img src="<?php echo base_url()."asset/site/"; ?>images/star-icon-small.png" height="12">
+											<?php }?>
+                                            </span>
                                         </p>
-                                         <?php if($rows->ATC_writer_ref!=""&&$rows->ATC_writer_ref!="0"){ ?>
-                                        <p>บทความอ้างอิง : <?php echo $rows->ATC_writer_ref; ?></p>
+                                         <?php if($row->ATC_writer_ref!=""&&$row->ATC_writer_ref!="0"){ ?>
+                                        <p>บทความอ้างอิง : <?php echo $row->ATC_writer_ref; ?></p>
                                         <?php } ?>
                                     </div>
                                     <h3 class="article-title  bold  highlight">
-                                   <?php echo $rows->ATC_title; ?>
+                                   <?php echo $row->ATC_title; ?>
                                     </h3>
                                     
                                     <!-- <div class="box-social">Social Media Script</div> -->
@@ -86,19 +90,19 @@ $txtcat = $cat->CAT_topic; ?>
                             </div><!-- .article -->  
 
                             <div class="content-details">
-                               <center> <?php echo ($rows->ATC_video != "" ? '
-						  <a href="'.base_url().'uploads/article/video/'.$rows->ATC_video.'" style="display:block;width:640px;height:480px;" id="playerflow"></a>' : '') ?>
+                               <center> <?php echo ($row->ATC_video != "" ? '
+						  <a href="'.base_url().'uploads/article/video/'.$row->ATC_video.'" style="display:block;width:640px;height:480px;" id="playerflow"></a>' : '') ?>
                           </center>
-                                <?php echo htmldecode($rows->ATC_desc); ?>
+                                <?php echo htmldecode($row->ATC_desc); ?>
 
                                 <!-- Comments Footer Massage
                                 <div class="footer-details">
                                     <p class="highlight  bold">จรูญ พิตะพันธ์ รายงาน</p>
                                 </div>
                                 -->
-                                <?php if($rows->ATC_tag!="") { ?>
+                                <?php if($row->ATC_tag!="") { ?>
                                 <p>
-                                            <span>Tag : <?php echo $rows->ATC_tag;  ?> </span>
+                                            <span>Tag : <?php echo $row->ATC_tag;  ?> </span>
                                            
                                             
                                         </p>
@@ -138,7 +142,7 @@ $txtcat = $cat->CAT_topic; ?>
                         <div class="box-article-header">
                             <h2>
                                 <img src="<?php echo base_url()."asset/site/"; ?>images/articles-relate.png" alt="img">
-                                <a target="_blank" href="<?php echo site_url('site/article/rss_catalog/'.$rows->ATC_category_ref); ?>" class="icon"><img src="<?php echo base_url()."asset/site/"; ?>images/rss.png"></a>
+                                <a target="_blank" href="<?php echo site_url('site/article/rss_catalog/'.$row->ATC_category_ref); ?>" class="icon"><img src="<?php echo base_url()."asset/site/"; ?>images/rss.png"></a>
                             </h2>
                         </div>
                        
@@ -157,6 +161,11 @@ $txtcat = $cat->CAT_topic; ?>
                                            <span>ผู้เขียน : <?php echo $resent->ATC_writer;  ?> | </span>
                                             <span>ผู้เข้าชม : <?php echo $resent->ATC_viewall; ?> | </span>
                                             <span><?php echo th_date($resent->ATC_date->format('Y-m-d'));  ?></span>
+                                             <span> &nbsp;&nbsp;
+                                            <?php for($i=1;$i<=$resent->ATC_quality;$i++){ ?>
+												<img src="<?php echo base_url()."asset/site/"; ?>images/star-icon-small.png" height="12">
+											<?php }?>
+                                            </span>
                                         </p>
                                          <?php if($resent->ATC_writer_ref!=""&&$resent->ATC_writer_ref!="0"){ ?>
                                         <p>บทความอ้างอิง : <?php echo $resent->ATC_writer_ref; ?></p>
@@ -165,7 +174,7 @@ $txtcat = $cat->CAT_topic; ?>
                                     <h3 class="article-title">
                                         <a href="<?php echo site_url('site/article/detail/'.$resent->ATC_id); ?>" title="<?php echo $resent->ATC_title; ?>" class="highlight  bold"><?php echo cut_word($resent->ATC_title,200); ?></a>
                                     </h3>
-                                    <p>  <?php echo htmldecode(cut_word($rows->ATC_short_desc,500)); ?></p>
+                                    <p>  <?php echo htmldecode(cut_word($row->ATC_short_desc,500)); ?></p>
                                 </div>
                             </div><!-- .article -->  
 						<?php 

@@ -48,11 +48,21 @@
 $active_group = 'default';
 $active_record = TRUE;
 
-$db['default']['hostname'] = '112.121.129.117';
+
+
 //$db['default']['port'] = 1433;
+$db['default']['hostname'] = '112.121.129.117';
 $db['default']['username'] = 'sa';
 $db['default']['password'] = '!NNTDataCenter>>';
 $db['default']['database'] = 'NNT_KM';
+
+
+
+/*$db['default']['hostname'] = '122.155.16.226';
+$db['default']['username'] = 'NNT-DB';
+$db['default']['password'] = '12345678';
+$db['default']['database'] = 'NNT_KM';*/
+
 $db['default']['dbdriver'] = 'sqlsrv';
 $db['default']['dbprefix'] = '';
 $db['default']['pconnect'] = FALSE;
@@ -65,11 +75,16 @@ $db['default']['swap_pre'] = '';
 $db['default']['autoinit'] = TRUE;
 $db['default']['stricton'] = FALSE;
 
-$db['articledb']['hostname'] = '112.121.129.117';
-//$db['articledb']['port'] = 1433;
+/*$db['articledb']['hostname'] = '112.121.129.117';
 $db['articledb']['username'] = 'sa';
 $db['articledb']['password'] = '!NNTDataCenter>>';
+$db['articledb']['database'] = 'NNT_DataCenter_2';*/
+
+$db['articledb']['hostname'] = '122.155.16.226';
+$db['articledb']['username'] = 'NNT-DB';
+$db['articledb']['password'] = '12345678';
 $db['articledb']['database'] = 'NNT_DataCenter_2';
+
 $db['articledb']['dbdriver'] = 'sqlsrv';
 $db['articledb']['dbprefix'] = '';
 $db['articledb']['pconnect'] = FALSE;

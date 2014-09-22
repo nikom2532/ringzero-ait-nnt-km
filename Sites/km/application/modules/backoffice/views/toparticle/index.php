@@ -35,7 +35,7 @@
                                         </td>-->
                                         <td><?php echo $count; ?></td>
                                         <td>
-                                        	<img src="<?php echo site_url('uploads/article/image/'.$row->ATC_image); ?>" width="150"/>
+                                        	<img src="<?php echo str_replace(";","",$row->ATC_image); ?>" onerror="this.src='<?php echo site_url('asset/site/images/picDefalt.png'); ?>';" width="150"/>
                                         </td>
                                         <td>
                                         		<b>หัวข้อ :</b> <a href="<?php echo site_url("backoffice/toparticle/edit/".$row->ATC_id) ?>"><?php echo $row->ATC_title; ?></a><br/>

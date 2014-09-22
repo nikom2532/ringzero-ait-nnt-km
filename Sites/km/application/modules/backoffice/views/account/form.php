@@ -44,17 +44,19 @@
                       value="<?php echo (empty($result) ? set_value('name') : $result->ACC_name ); ?>" />
               </p>
  <!-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->            
-			<p>
+			<!--<p>
                   <label>สังกัด ( <font color="#FF0000">***</font> )</label>
                       <input class="text-input small-input" type="text"  name="ACC_dep1" 
                       value="<?php echo (empty($result) ? set_value('ACC_dep1') : $result->ACC_dep1 ); ?>" />
-              </p>
+              </p>-->
               
               <p>
-                  <label>หน่วยงาน ( <font color="#FF0000">***</font> )</label>
-                      <input class="text-input small-input" type="text"  name="ACC_dep2" 
-                      value="<?php echo (empty($result) ? set_value('ACC_dep2') : $result->ACC_dep2 ); ?>" />
-              </p>
+                      <label>สังกัด/หน่วยงาน ( <font color="#FF0000">***</font> )</label>
+                      <?php
+					$style = 'class="text-input"';
+					echo form_dropdown('ACC_dep2',$categorys, (isset($result)) ? $result->ACC_dep2 : set_value('ACC_dep2'), $style);
+					?>
+                  </p>
               
               <p>
                   <label>ตำแหน่ง ( <font color="#FF0000">***</font> )</label>

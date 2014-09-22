@@ -8,10 +8,11 @@ class Faq extends MY_Controller {
 		$this->load->model('site/model_home');
 	
 		
+		$foot = $this->model_home->get_contact();
 		$this->template->set_layout('site/layout/template')
 			->js('asset/site/js/jquery.min.js');
 			$this->template->set_layout('site/layout/template')	
-			->set_view('footer','site/include/footer')
+			->set_view('footer','site/include/footer',array('foot'=>$foot))
 			->set_view('some_script','site/include/some_script')
 			->set_view('header','site/include/header', array('menu_main'=>4)); 
 	}

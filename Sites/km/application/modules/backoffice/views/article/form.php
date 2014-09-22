@@ -44,12 +44,17 @@
 					echo form_dropdown('ATC_quality',$quality, (isset($result)) ? $result->ATC_quality : set_value('ATC_quality'), $style);
 					?>
                   </p>
-    
+                 <?php if(isset($newspic)){ ?>
     			<p>
+                <?php //echo $newspic[$ref->N_id]; ?>
+                <img src="<?php echo $newspic[$ref->N_id]; ?>" onerror="this.src='<?php echo site_url('asset/site/images/picDefalt.png'); ?>';" width="151" height="95"></p>
+    			<input type="hidden" name="refpic" id="refpic" value="<?php echo $newspic[$ref->N_id]; ?>" />
+				<?php } ?>
+                <p>
                       <label>รูปภาพ ( <font color="#FF0000">***</font> )</label>
                           <?php $att=array('name'=>'ATC_image'); echo form_upload($att);?>
                           <br /><small>ขนาดไฟล์ไม่เกิน 2 MB, รองรับไฟล์นามสกุล (.jpg, .jpeg, .png, .gif ) ขนาดแนะนำ 309*179px.</small>
-                          <?php echo (isset($result) ? '<br /><img src="'.site_url('uploads/article/image/'.$result->ATC_image).'" width="309" />' : '') ?>
+                          <?php echo (isset($result) ? '<br /><img src="'.str_replace(";","",$result->ATC_image).'" onerror="this.src='.site_url('asset/site/images/picDefalt.png').'" width="150"/>' : '') ?>
                   </p>
                   
                   <p>
@@ -65,7 +70,7 @@
                   <p>
                       <label>ไฟล์</label>
                           <?php $att3=array('name'=>'ATC_file'); echo form_upload($att3);?>
-                          <br /><small>ขนาดไฟล์ไม่เกิน 2 MB, รองรับไฟล์นามสกุล (.pdf) </small>
+                          <br /><small>ขนาดไฟล์ไม่เกิน 2 MB, รองรับไฟล์นามสกุล (.pdf,doc,docx,xls,xlsx) </small>
                           <?php echo (isset($result) ? ($result->ATC_file != "" ? '<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 						  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 						  <a href="'.base_url().'uploads/article/file/'.$result->ATC_file.'" ><img src="'.base_url()."asset/backoffice/images/icons/text.png".'" />ไฟล์แนบ</a>' : '') : ''); ?>

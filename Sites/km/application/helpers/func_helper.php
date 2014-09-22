@@ -17,14 +17,14 @@ function encode_url($url){
 				$ars = explode(",",$set);
 				foreach($ars as $arr){
 					if($arr == "ผู้ดูแลระบบ"){ $result .= 'ALL,Account,Category,Article,Approve_article,Suggest_article,Toparticle,FAQ,Set_email,Contact_us,Address,';  }
-					else if($arr == "สมาชิก"){ $result .= 'Article,FAQ,Set_email,Contact_us,Address,';  }
-					else{ $result .= 'Article,Suggest_article,Toparticle,FAQ,Set_email,Contact_us,Address,';  }
+					else if($arr == "สมาชิก"){ $result .= 'Article,FAQ,Sendemail';  }
+					else{ $result .= 'Article,Suggest_article,Toparticle,FAQ,Sendemail';  }
 				}
 		}else{
 					if($set == "ผู้ดูแลระบบ"){ $result .= 'ALL,Account,Category,Article,Approve_article,Suggest_article,Toparticle,FAQ,Set_email,Contact_us,Address';  }
 					else if($set == "ALL"){ $result .= 'ALL';  }
-					else if($set == "สมาชิก"){ $result .= 'Article,FAQ,Set_email,Contact_us,Address';  }
-					else{ $result .= 'Article,Suggest_article,Toparticle,FAQ,Set_email,Contact_us,Address';  }
+					else if($set == "สมาชิก"){ $result .= 'Article,FAQ,Sendemail';  }
+					else{ $result .= 'Article,Suggest_article,Toparticle,FAQ,Sendemail';  }
 		}
 		return $result;
 	}
@@ -49,11 +49,12 @@ function encode_url($url){
 				else if($menu == "set_email"){ $result = "ผู้รับผิดชอบการติดต่อ";  }
 				else if($menu == "contact_us"){ $result = "ผู้ติดต่อ"; }
 				else if($menu == "address"){ $result = "ที่อยู่ติดต่อ"; }
+				else if($menu == "sendcontact"){ $result = "ติดต่อผู้ดูแลระบบ"; }
 				return $result;
 	}
 	
 	function th_date($date){
-				$year = substr($date,0,4);
+				$year = (substr($date,0,4))+543;
 				$month = substr($date,5,2);
 				$day = substr($date,8,2);
 				$times = substr($date,10,9);

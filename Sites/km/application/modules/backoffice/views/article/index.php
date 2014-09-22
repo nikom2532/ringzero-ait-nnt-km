@@ -14,10 +14,10 @@
             <th scope="col" class="rounded" style="text-align:center">Order</th>-->
             <th scope="col" class="rounded">รูปภาพ / วิดีโอ</th>
             <th scope="col" class="rounded" width="350">บทความ</th>
-            <!--<th scope="col" class="rounded">Gallery</th>-->
+            <th scope="col" class="rounded">ตัวอย่าง</th>
             <th scope="col" class="rounded" style="text-align:center" width="100">สถานะการเผยแพร่</th>
-            <th scope="col" class="rounded" style="text-align:center" width="70">หมายเหตุ</th>
             <th scope="col" class="rounded" style="text-align:center" width="70">คำแนะนำ</th>
+            <th scope="col" class="rounded" style="text-align:center" width="70">หมายเหตุ</th>
             <th scope="col" class="rounded" style="text-align:center">สถานะการใช้งาน</th>            
             <th scope="col" class="rounded" style="text-align:center" width="150">แก้ไขล่าสุด</th>
             <th scope="col" class="rounded-q4" style="text-align:center">เครื่องมือ</th>
@@ -35,11 +35,14 @@
                                         			<input name="keyed[]" type="hidden" value="< ?php echo $row->ATC_id; ?>"/>
                                         </td>-->
                                         <td>
-                                        	<img src="<?php echo site_url('uploads/article/image/'.$row->ATC_image); ?>" width="150"/>
+                                        	<img src="<?php echo str_replace(";","",$row->ATC_image); ?>" onerror="this.src='<?php echo site_url('asset/site/images/picDefalt.png'); ?>';" width="150"/>
                                             <?php echo ($row->ATC_video != "" ? '<br />
 						  <a href="'.base_url().'uploads/article/video/'.$row->ATC_video.'" style="display:block;width:150px;height:100px;" id="playerflow"></a>' : '') ?>
                                         </td>
                                         <td>
+                                        		<?php if(($this->session->userdata('session_user')=="admin")&&$row->ATC_delete==1){ ?>
+												<b>สถานะการลบ :</b> <span style="color:#F00; font-size:medium">ถูกลบแล้ว</span> <br/>
+												<?php } ?>
 												<b>หัวข้อ :</b> <?php echo $row->ATC_title; ?><br/>
                                                 <br/><b>หมวดหมู่ :</b> <?php echo $categorys[$row->ATC_category_ref]; ?>
                                                 <br/><b>วันที่ :</b><?php echo th_date($row->ATC_date->format('Y-m-d'));  ?>
@@ -54,7 +57,7 @@
                                                 <?php echo ($row->ATC_writer != "" ? '<br /><b>บทความอ้างอิง : </b>'.$row->ATC_writer : '') ?>
                                                 <?php echo ($row->ATC_suggest != 0 ? '<br /><br /><b>*** บทความแนะนำ ***</b>' : '') ?>                                                      
                                         </td>
-                                        <!--<td><a href="< ?php echo site_url('backoffice/gallery/index/'.$row->ATC_id); ?>">Gallery</a></td>-->
+                                       	<td><a target="_blank" href="<?php echo site_url('site/article/review/'.$row->ATC_id); ?>">Review</a></td>
                                         <td style="text-align:center"><?php echo status_announce($row->ATC_status); ?></td>
                                         <td style="text-align:center">
 											<?php if($row->ATC_comment != ""){ ?>
@@ -83,7 +86,8 @@
                                                 <br/><br/><b>ผู้อนุมัติ</b><br/><?php echo $row->ATC_approve_by;  ?><br/><?php } ?>
                                         </td>                                        
                                         <td style="text-align:center">
-                                        <?php echo anchor("backoffice/article/edit/".$row->ATC_id,
+                                        <?php 
+										echo anchor("backoffice/article/edit/".$row->ATC_id,
 										"<img src='".site_url('asset/backoffice/images/icons/edit.png')."'/>")."&nbsp;".
 										anchor("backoffice/article/delete/".$row->ATC_id,"<img src='".site_url('asset/backoffice/images/icons/delete.png')."'/>",array('onclick' => 'return delete_data()')); ?></td>
                                     </tr>

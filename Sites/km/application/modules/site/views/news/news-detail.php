@@ -1,4 +1,8 @@
+<script src="<?php echo base_url()."asset/flowplayer/" ?>flowplayer-3.2.11.min.js"></script>
 <?php if(!empty($rows)){ foreach($rows as $rows) : ?>   
+
+<?php endforeach; } ?>
+<?php if(!empty($viewnum)){ foreach($viewnum as $viewnum) : ?>   
 
 <?php endforeach; } ?>
 
@@ -48,7 +52,7 @@ $txtcat = $cat->C_topic; ?>
                                     <div class="refference">
                                         <p>
                                             <span>ผู้เขียน : <?php echo $rows->N_writer;  ?> | </span>
-                                            <span>ผู้เข้าชม : <?php echo $rows->N_Views; ?> | </span>
+                                           <span>ผู้เข้าชม : <?php echo $viewnum->MyCount; ?> | </span>
                                             <span><?php echo th_date($rows->N_date->format('Y-m-d'));  ?></span>
                                             
                                         </p>
@@ -71,7 +75,31 @@ $txtcat = $cat->C_topic; ?>
                                     <p class="highlight  bold">จรูญ พิตะพันธ์ รายงาน</p>
                                 </div>
                                 -->
-                               
+                                 <?php
+										if(!empty($vdo)){
+										 foreach($vdo as $vdo) :
+										 $path = "http://61.19.244.31/centerapp/UploadFiles/Video/";
+										$type = ".mp4";
+										$video = $vdo->NV_Url; // path เก่า ที่จะนำมาตัดสริงเอาชื่อไฟล์และวันที่;
+										if (strlen($video) > 115) //เช็คความยาวชื่อไฟล์วีดีโอก่อนจะตัด
+										{
+										   $video_name = substr($video,-40,-4);
+										   $video_date = substr($video,-51,-41)."/Mobile/";
+										}
+										else
+										{
+										   $video_name = substr($video,-24,-4);
+										   $video_date = substr($video,-35,-25)."/Mobile/";
+										}
+
+									?>  
+                                <center><p> <?php echo ($vdo->NV_Url != "" ? '
+						  <a href="'.$path.$video_date.$video_name.$type.'" style="display:block;width:640px;height:480px;" id="playerflow"></a>' : '') ?>
+                          </p></center>
+                           <?php 
+								endforeach;
+										}
+						 			?>
                             </div>
                             
                             <div class="box-gallery">
@@ -116,7 +144,7 @@ $txtcat = $cat->C_topic; ?>
                                     </div>
                                     <div class="refference">
                                         <span>ผู้เขียน : <?php echo $resent->N_writer;  ?> | </span>
-                                            <span>ผู้เข้าชม : <?php echo $resent->N_Views; ?> | </span>
+                                            <span>ผู้เข้าชม : <?php echo $numview[$resent->N_id]; ?> | </span>
                                             <span><?php echo th_date($resent->N_date->format('Y-m-d'));  ?></span>
                                     </div>
                                     <h3 class="article-title">
@@ -138,3 +166,89 @@ $txtcat = $cat->C_topic; ?>
 <?php } ?>
                 </div> <!-- .right-sidebar -->
             </div>
+ <script type="text/javascript">
+			$(function(){
+				
+					$('#dialogk').dialog({
+					autoOpen: false,
+					width: 400,
+					draggable: true,
+					resizable: true,
+					/*	buttons: {
+							"Ok": function() {
+								$(this).dialog("close");
+							},
+							"Cancel": function() {
+								$(this).dialog("close");
+							}
+						}*/
+					});
+					
+					$('#dialogr').dialog({
+					autoOpen: false,
+					width: 400,
+					draggable: true,
+					resizable: true,
+					/*	buttons: {
+							"Ok": function() {
+								$(this).dialog("close");
+							},
+							"Cancel": function() {
+								$(this).dialog("close");
+							}
+						}*/
+					});
+					
+					$(".dialog_video").click(function(){
+					  		$('#dialogk').html('<p>'+$(this).data("val")+'</p>');
+							$('#dialogk').dialog('open');
+					});
+				
+					$(".dialog_reason").click(function(){
+					  		$('#dialogr').html('<p>'+$(this).data("val")+'</p>');
+							$('#dialogr').dialog('open');
+					});
+				
+					 flowplayer("playerflow", "<?php echo base_url()."asset/flowplayer/" ?>flowplayer-3.2.16.swf", {
+						key:'#$1972f2c4512bcba9deb',
+						plugins: {
+							/*'viral': {
+								'url': 'flowplayer.viralvideos-3.2.13.swf',
+								'share': {
+									'description': 'Extreme surfers riding big waves'
+								}
+							},*/
+							controls: {
+								'url': '<?php echo base_url()."asset/flowplayer/" ?>flowplayer.controls-3.2.15.swf',
+								backgroundColor: "transparent",
+								backgroundGradient: "none",
+								sliderColor: '#FFFFFF',
+								sliderBorder: '1.5px solid rgba(160,160,160,0.7)',
+								volumeSliderColor: '#FFFFFF',
+								volumeBorder: '1.5px solid rgba(160,160,160,0.7)',
+					 
+								timeColor: '#ffffff',
+								durationColor: '#535353',
+					 
+								tooltipColor: 'rgba(255, 255, 255, 0.7)',
+								tooltipTextColor: '#000000'
+							}
+						},
+						clip: {
+							autoPlay: false,
+							autoBuffering: true,
+							start:0,
+							duration:0,
+						}/*,
+						logo: {
+							opacity:1,
+							left:20,
+							url:'http://morning-news.bectero.com/image/logo-bectero.png',
+							fullscreenOnly:false,
+							top:20
+						}*/
+					});
+				
+			});
+			
+</script>

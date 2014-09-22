@@ -41,6 +41,7 @@ class Model_home extends MY_Model
 						dbo.article_monthly
 						LEFT JOIN dbo.article ON dbo.article.ATC_id = dbo.article_monthly.AM_atc_ref
 						WHERE
+						dbo.article.ATC_delete = NULL AND
 						dbo.article_monthly.AM_month = '".date('m')."' AND
 						dbo.article.ATC_status = '1อนุญาตให้เผยแพร่' AND
 						dbo.article_monthly.AM_year = '".date('Y')."'

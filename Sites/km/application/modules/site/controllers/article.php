@@ -9,11 +9,13 @@ class Article extends MY_Controller {
 		parent::__construct();
 		
 		$this->load->model('site/model_article');
+		$this->load->model('site/model_home');
+		$foot = $this->model_home->get_contact();
 		$this->load->model('backoffice/model_toparticle');
 		$this->template->set_layout('site/layout/template')
 			->js('asset/site/js/jquery.min.js');
 			$this->template->set_layout('site/layout/template')	
-			->set_view('footer','site/include/footer')
+			->set_view('footer','site/include/footer',array('foot'=>$foot))
 			->set_view('some_script','site/include/some_script')
 			->set_view('header','site/include/header', array('menu_main'=>3)); 
 	}
@@ -188,6 +190,59 @@ class Article extends MY_Controller {
 		$postyear = date("Y");
 		$postmonth = date("m");
 		$dataval = $this->model_article->get_id($param1);
+		$dataview = ($dataval[0]->ATC_viewall)+1;
+		$datamonth =0 ;
+		$datamonth = $this->model_article->get_chkmonth($postyear,$postmonth,$param1);
+		//echo print_r($datamonth);
+		if(empty($datamonth)){
+			$data = array(
+					'AM_atc_ref' =>  $param1,
+					'AM_year' =>  $postyear,
+					'AM_month' =>  $postmonth,
+					'AM_view' =>  $dataview	
+			);
+			
+			$this->model_article->add_ac($data);
+		}
+		//$data_update = array('ATC_viewall' =>  $dataview);
+		//$this->model_article->update_ac($data_update,$param1);
+		$this->template->build('site/article/article-detail',$data);
+		$data_update = array('ATC_viewall' =>  $dataview);
+		$this->model_article->update_ac($data_update,$param1);
+	}
+
+	public function review($param1=NULL){
+		
+		 $years = $this->model_toparticle->get_year();
+		 $options = array('' => '-- ปี --');
+		 foreach($years as $value) {
+			$options[$value->AM_year] = $value->AM_year;
+		 }
+		 $data['years'] = $options;
+		 
+		 $option2 = array(
+		 	'' => '-- เดือน --',
+		 	'01' => 'มกราคม',			
+			'02' => 'กุมภาพันธ์',
+			'03' => 'มีนาคม',
+			'04' => 'เมษายน',
+			'05' => 'พฤษภาคม',
+			'06' => 'มิถุนายน',
+			'07' => 'กรกฎาคม',
+			'08' => 'สิงหาคม',
+			'09' => 'กันยายน',
+			'10' => 'ตุลาคม',
+			'11' => 'พฤศจิกายน',
+			'12' => 'ธันวาคม',
+		 );
+		 $data['months'] = $option2;
+		$rows =  $this->model_article->get_reviewid($param1);
+		$data['resent'] = $this->model_article->get_resent($param1,$rows[0]->ATC_category_ref);
+		$data['categorys']  = $this->model_article->get_category();
+		$data['rows'] =  $this->model_article->get_review($param1);
+		$postyear = date("Y");
+		$postmonth = date("m");
+		$dataval = $this->model_article->get_reviewid($param1);
 		$dataview = ($dataval[0]->ATC_viewall)+1;
 		$datamonth =0 ;
 		$datamonth = $this->model_article->get_chkmonth($postyear,$postmonth,$param1);

@@ -5,13 +5,24 @@ class Model_news extends MY_Model
 	{
 		$this->load->database();
 	}
-
+	function add_ac($data){
+		$this->db->insert('news_view', $data); 
+	}
 	function get_category(){			
 		$db2 = $this->load->database('articledb', TRUE);	
 		$db2->where("C_status","Y");
 		$query = $db2->get("KM_category_news");
 		return $query->result(); 
 		//return $this->db->last_query();
+	}
+	function get_viewsid($id){
+		//$query = $this->db->query("SELECT COUNT(NV_ref) FROM dbo.news_view WHERE dbo.news_view.NV_ref  = '".$id."' ");
+		$this->db->select("COUNT(NV_ref) AS MyCount");
+		$this->db->from("news_view");
+		$this->db->where("NV_ref", $id);
+		$query = $this->db->get();
+		return $query->result();
+		//return $this->db->last_query(); 
 	}
 	function get_categoryid($type=NULL){			
 		$db2 = $this->load->database('articledb', TRUE);	
@@ -51,6 +62,12 @@ class Model_news extends MY_Model
 		$query = $db2->get("KM_news_gallery");
 		return $query->result(); 
 	}
+	function get_vdo($id=NULL){
+		$db2 = $this->load->database('articledb', TRUE);			
+		$db2->where("NV_news_ref",$id);
+		$query = $db2->get("KM_news_vdo");
+		return $query->result(); 
+	}
 	function get_ac($type=NULL,$offset = NULL,$limit = NULL){	
 	$db2 = $this->load->database('articledb', TRUE);		
 		if(! is_null($offset) && ! is_null($limit)) {
@@ -71,6 +88,7 @@ class Model_news extends MY_Model
 			}
 			$db2->order_by("N_date","desc");
 			$query = $db2->get("KM_news");
+			
 			return $query->num_rows();
 		}
 	}

@@ -74,6 +74,12 @@ class Login extends MY_Controller {
 				$this->session->set_userdata('session_accid',$chk_password->ACC_id);
 				$this->session->set_userdata('session_login',$chk_password->ACC_name);
 				$this->session->set_userdata('session_menu',authen($chk_password->ACC_menu));
+				if($chk_password->ACC_menu=="ผู้ดูแลระบบ"||$chk_password->ACC_menu=="ALL"){
+					$this->session->set_userdata('session_user',"admin");
+				}else{
+					$this->session->set_userdata('session_user',"user");
+				}
+				$this->session->set_userdata('session_menu',authen($chk_password->ACC_menu));
 				$_SESSION['DIR_SELF'] = md5($this->session->userdata('session_accid'));
 				return TRUE;
 		}
@@ -84,6 +90,7 @@ class Login extends MY_Controller {
 		$this->session->unset_userdata('session_accid');
 		$this->session->unset_userdata('session_loginfalse');
 		$this->session->unset_userdata('session_menu');
+		$this->session->unset_userdata('session_user');
 		redirect('backoffice/login','location');
 	}
 }

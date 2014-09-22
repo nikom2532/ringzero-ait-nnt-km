@@ -34,6 +34,7 @@
                                         </td>-->
                                        
                                         <td>
+                                        		<img src="<?php echo $newspic[$row->N_id]; ?>" onerror="this.src='<?php echo site_url('asset/site/images/picDefalt.png'); ?>';" width="151" height="95"><br />
                                         		<b>หัวข้อ :</b> <?php echo $row->N_title; ?><br/>
                                                 <br/><b>ผู้เขียน :</b> <?php echo $row->N_writer;  ?>
                                                 <br/><b>วันที่ :</b><?php echo th_date($row->N_date->format('Y-m-d'));  ?>

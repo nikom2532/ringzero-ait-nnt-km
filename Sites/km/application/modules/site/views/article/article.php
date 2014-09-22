@@ -157,17 +157,28 @@
                             <div class="article">
                                 <div class="details">
                                     <div class="image">
-                                        <a href="<?php echo site_url('site/article/detail/'.$row->ATC_id); ?>" title="<?php //echo $row->ATC_title; ?>"><img src="<?php echo site_url('uploads/article/image/'.$row->ATC_image); ?>" width="151" height="95"/></a>
+                                        <a href="<?php echo site_url('site/article/detail/'.$row->ATC_id); ?>" title="<?php //echo $row->ATC_title; ?>">
+                                        <img src="<?php echo str_replace(";","",$row->ATC_image); ?>" onerror="this.src='<?php echo site_url('asset/site/images/picDefalt.png'); ?>';" width="151" height="95"/>
+                                       </a>
                                     </div>
                                     <div class="refference">
                                         <p>
                                             <span>ผู้เขียน : <?php echo $row->ATC_writer; ?> | </span>
-                                            <span>ผู้เข้าชม : <?php echo $row->ATC_viewall; ?> | </span>
+                                            <span>ผู้เข้าชม : <?php 
+											if($this->uri->segment(4)=="toparticle"){
+												echo $row->AM_view;
+											}else{
+											echo $row->ATC_viewall; }?> | </span>
                                             <span><?php echo th_date($row->ATC_date->format('Y-m-d'));  ?></span>
+                                            <span> &nbsp;&nbsp;
+                                            <?php for($i=1;$i<=$row->ATC_quality;$i++){ ?>
+												<img src="<?php echo base_url()."asset/site/"; ?>images/star-icon-small.png" height="12">
+											<?php }?>
+                                            </span>
                                              <?php if($row->ATC_tag!=""){ ?>
                                              <br />
-
-Tag : <?php echo str_replace($this->session->userdata("search_tag"),"*".$this->session->userdata("search_tag")."*",$row->ATC_tag); } ?>
+<span>
+Tag : </span><?php echo str_replace($this->session->userdata("search_tag"),"<span style='color:#4d207b;font-weight: bold'>".$this->session->userdata("search_tag")."</span>",$row->ATC_tag); } ?>
                                         </p>
                                         
                                         <?php if($row->ATC_writer_ref!=""&&$row->ATC_writer_ref!="0"){ ?>
@@ -193,7 +204,7 @@ Tag : <?php echo str_replace($this->session->userdata("search_tag"),"*".$this->s
 						 ?>
                             <div class="box-pagination">
                             <?php if(isset($totalrow)){ ?>
-                                <p class="total-pages">ทั้งหมด: <span><?php  if(empty($rows)){ echo "0"; }else{echo $totalrow;} ?></span> รายการ </p>
+                                <p class="total-pages">ทั้งหมด: <span><?php  if(empty($rows)){ echo "0"; }else{echo number_format($totalrow);} ?></span> รายการ </p>
                                 <?php echo $pagination; ?>
                            <?php } ?>    
                             </div>

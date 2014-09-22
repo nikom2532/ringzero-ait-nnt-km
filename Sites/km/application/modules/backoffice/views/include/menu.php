@@ -61,7 +61,17 @@
              			คำถามที่พบบ่อย
              </a>
     </li>
-    
+     <?php if(in_array('Sendemail', explode(",",$this->session->userdata('session_menu')))) :?>
+    <li>
+             <a href="<?php echo site_url('backoffice/sendcontact') ?>" class="nav-top-item no-submenu 
+			 <?php echo ($menu_main == 10 ? 'current' : '' ); ?>">
+             			ติดต่อผู้ดูแลระบบ
+             </a>
+    </li>
+     <?php endif; ?>
+   
+   
+    <?php if(in_array('Set_email', explode(",",$this->session->userdata('session_menu'))) OR in_array('ALL', explode(",",$this->session->userdata('session_menu')))) :?>
     <li>
              <a href="#" class="nav-top-item <?php echo ($menu_main == 9 || $menu_main == 10 || $menu_main == 11  ? 'current' : '' ); ?>">ติดต่อเรา</a>
              <ul>
@@ -73,6 +83,7 @@
 				  <?php echo ($menu_main == 11 ? 'current' : '' ); ?>">ที่อยู่ติดต่อ</a></li>
           	</ul>
     </li>
-     
+   <?php endif; ?>
+  
 </ul> <!-- End #main-nav -->    
 			

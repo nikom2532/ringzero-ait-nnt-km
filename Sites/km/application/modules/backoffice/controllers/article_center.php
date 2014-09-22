@@ -42,7 +42,8 @@ class Article_center extends MY_Controller {
 		$this->session->unset_userdata("end_article_center");
 		
 		 $config["base_url"] = base_url()."backoffice/article_center/index";
-		 $config['total_rows'] =  $this->model_article_center->get_ac();
+		 //$config['total_rows'] =  $this->model_article_center->get_ac();
+		 $config['total_rows'] =  500;
 		 $config['per_page'] = '40'; 
 		 $config['num_links'] = '5'; 
 		 $config['uri_segment'] = 5;
@@ -56,6 +57,21 @@ class Article_center extends MY_Controller {
 		 $this->pagination->initialize($config); 
 		 
 		 $data['rows'] = $this->model_article_center->get_ac(NULL,$config['per_page'],$this->uri->segment(5));
+		 
+		
+		 if(!empty($data['rows'])){
+			 foreach($data['rows'] as $row) :
+			 $rowpic = $this->model_article_center->get_cover($row->N_id);
+			 if(!empty($rowpic)){
+			 	$value[$row->N_id] = $rowpic[0]->NG_ThumbnailUrl;
+			 }else{
+				 $value[$row->N_id] = site_url('asset/site/images/picDefalt.png'); 
+			 }
+			 
+			
+			 endforeach;
+		 }
+		$data['newspic'] = $value;
 		 
 		 $data['categorys']  = $this->model_article_center->get_category();
 		 

@@ -6,6 +6,7 @@ class Article extends MY_Controller {
 		parent::__construct();
 		
 		$this->load->model('backoffice/model_article');
+		$this->load->model('backoffice/model_article_center');
 		$this->path_upload= FCPATH. 'uploads/article/';
 		
 		$this->template->set_layout('backoffice/layout/template')
@@ -63,7 +64,8 @@ class Article extends MY_Controller {
 			$options[$value->CAT_id] = $value->CAT_topic;
 		 }
 		 $data['categorys'] = $options;
-		 
+		
+		
 		 $option2 = array(
 		 	'' => '-- สถานะการเผยแพร่ --',
 		 	'0รอการตรวจสอบ' => 'รอการตรวจสอบ',			
@@ -180,6 +182,13 @@ class Article extends MY_Controller {
 			$data['messages'] = $msg;
 		if($param2!=""){
 				$data["ref"] = $this->model_article->get_id($param2);
+			if(!empty($data['ref'])){
+				 $rowpic = $this->model_article_center->get_cover($param2);
+				 if(!empty($rowpic)){
+					$value[$param2] = $rowpic[0]->NG_ThumbnailUrl;
+				 }
+			}
+		$data['newspic'] = $value;
 		}
 		$categorys = $this->model_article->get_category();
 		$options = array('' => '--- กรุณาเลือกหมวดหมู่บทความ ---');
@@ -222,13 +231,21 @@ class Article extends MY_Controller {
 					'ATC_add' => $this->config->item('now'),
 					'ATC_update' => $this->config->item('now'),
 					'ATC_quality' => $this->input->post('ATC_quality')	,
+					'ATC_delete' => 0,
 					'ATC_viewall' => 0,
 					'ATC_suggest' => 0,
 					'ATC_userupdate' => $this->session->userdata('session_login')
 			);
+			$data2 = array(
+					'NL_ref' => $this->input->post('ATC_news_ref'),
+					'NL_authorID' =>  $this->session->userdata('session_accid'),
+					'NL_date' =>  $this->config->item('now')
+			);
+			
+		$this->model_article->add_newslog($data2);
 			////////////////////////////////////ATC_image/////////////////////////////////////////////
 				$config_ATC_imgdetail2['upload_path'] = $this->path_upload.'/file';
-				$config_ATC_imgdetail2['allowed_types'] = 'pdf';
+				$config_ATC_imgdetail2['allowed_types'] = 'pdf|doc|docx|xls|xlsx';
 				$config_ATC_imgdetail2['max_size'] = '2000';
 				$config_ATC_imgdetail2['encrypt_name'] = TRUE;
 				
@@ -268,16 +285,24 @@ class Article extends MY_Controller {
 									'quality' => 100
 								);
 								
-						$data['ATC_image'] = $image_data['file_name'];
-						$this->model_article->add_ac($data);
-						$this->session->set_flashdata('success','เพิ่มข้อมูลสำเร็จ');
-						redirect('backoffice/article/index','location');
+						$data['ATC_image'] = site_url('uploads/article/image/'.$image_data['file_name']);
+						
 				}else{
-					$msg = $this->upload->display_errors('<div class="notification error png_bg"><a href="#" class="close">
-					<img src="'.site_url('asset/backoffice/images/icons/cross_grey_small.png').'" title="Close this notification" alt="close" /></a><div>',
-					'</div></div>');
-					$this->create($msg,$this->input->post('ATC_news_ref'));
+					if($this->input->post('refpic')!=""&&$this->input->post('ATC_writer_ref')!=""){
+						$data['ATC_image'] = $this->input->post('refpic');
+						//$data['ATC_image'] = str_replace(";","",$this->input->post('refpic'));
+						
+					}else{
+						$msg = $this->upload->display_errors('<div class="notification error png_bg"><a href="#" class="close">
+						<img src="'.site_url('asset/backoffice/images/icons/cross_grey_small.png').'" title="Close this notification" alt="close" /></a><div>',
+						'</div></div>');
+						$this->create($msg,$this->input->post('ATC_news_ref'));
+					}
+					
 				}
+				$this->model_article->add_ac($data);
+				$this->session->set_flashdata('success','เพิ่มข้อมูลสำเร็จ');
+				redirect('backoffice/article/index','location');
 			////////////////////////////////////ATC_image/////////////////////////////////////////////
 		}else{
 			$this->create();
@@ -347,12 +372,12 @@ class Article extends MY_Controller {
 									'quality' => 100
 								);
 								
-						$data['ATC_image'] = $image_data['file_name'];
+						$data['ATC_image'] = site_url('uploads/article/image/'.$image_data['file_name']);
 						$this->unlink_pic($this->input->post('old_pic'));
 				}
 				////////////////////////////////////ATC_image/////////////////////////////////////////////
 				$config_ATC_imgdetail2['upload_path'] = $this->path_upload.'/file';
-				$config_ATC_imgdetail2['allowed_types'] = 'pdf';
+				$config_ATC_imgdetail2['allowed_types'] = 'pdf|doc|docx|xls|xlsx';
 				$config_ATC_imgdetail2['max_size'] = '2000';
 				$config_ATC_imgdetail2['encrypt_name'] = TRUE;
 				
@@ -424,8 +449,13 @@ class Article extends MY_Controller {
 		}else{
 			 $del_data = $param1;
 			 $row = $this->model_article->get_for_update($del_data);
-			 $this->unlink_pic($row->ATC_image);
-			 $this->model_article->delete_ac($del_data);
+			 if(($this->session->userdata('session_user')=="admin")){
+				 $this->unlink_pic($row->ATC_image);
+				 $this->model_article->delete_ac($del_data);
+			 }else{
+				 $data = array('ATC_delete' => 1);			
+				$this->model_article->delete_user($data,$del_data);
+			 }
 			 $this->session->set_flashdata('success','การลบข้อมูลสำเร็จ');
 			 redirect('backoffice/article/index','location');
 		}

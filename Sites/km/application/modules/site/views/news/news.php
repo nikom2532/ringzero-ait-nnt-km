@@ -98,7 +98,7 @@
                                     <div class="refference">
                                         <p>
                                             <span>ผู้เขียน : <?php echo $row->N_writer;  ?> | </span>
-                                            <span>ผู้เข้าชม : <?php echo $row->N_Views; ?> | </span>
+                                            <span>ผู้เข้าชม : <?php echo $numview[$row->N_id]; ?> | </span>
                                             <span><?php echo th_date($row->N_date->format('Y-m-d'));  ?></span>
                                             
                                         </p>
@@ -117,7 +117,9 @@
 						 }
 						 ?>
                             <div class="box-pagination">
-                                <p class="total-pages">ทั้งหมด: <span><?php echo $totalrow; ?></span> รายการ </p>
+                                <p class="total-pages">ทั้งหมด: <span><?php //echo number_format($totalrow); ?>
+                                <?php  if(empty($rows)){ echo "0"; }else{echo number_format($totalrow);} ?>
+                                </span> รายการ </p>
                                 <?php echo $pagination; ?>
                                
                             </div>

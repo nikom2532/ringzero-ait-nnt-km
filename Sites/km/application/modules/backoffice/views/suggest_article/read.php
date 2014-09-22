@@ -25,7 +25,7 @@
             </tr>
             <tr>
             	<td width="25%"><?php echo '<b>รูปภาพ</b>'; ?></td>
-                <td width="75%"><?php echo '<img src="'.site_url('uploads/article/image/'.$result->ATC_image).'" width="309" />'; ?></td>
+                <td width="75%"><img src="<?php echo str_replace(";","",$result->ATC_image); ?>" onerror="this.src='<?php echo site_url('asset/site/images/picDefalt.png'); ?>';" width="150"/></td>
             </tr>
             <tr>
             	<td width="25%"><?php echo '<b>วิดีโอ</b>'; ?></td>

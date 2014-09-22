@@ -5,7 +5,14 @@ class Model_account extends MY_Model
 	{
 		$this->load->database();
 	}
-	
+	function get_category(){		
+				$db2 = $this->load->database('articledb', TRUE);			
+				$db2->where("SC07_Status","Y");
+				$db2->order_by("SC07_DepartmentName","asc");
+				$query = $db2->get("SC07_Department");
+				return $query->result(); 
+				//return $this->db->last_query();
+	}
 	function get_ac($offset = NULL,$limit = NULL){			
 			if(! is_null($offset) && ! is_null($limit)) {
 				$this->db->where("( ACC_menu NOT LIKE 'ALL' )");

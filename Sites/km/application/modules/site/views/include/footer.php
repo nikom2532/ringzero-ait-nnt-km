@@ -1,4 +1,7 @@
-	<div class="bg-nav-footer">
+	<?php if(!empty($foot)){ foreach($foot as $row) : endforeach; } 
+	
+	?>   
+    <div class="bg-nav-footer">
             <div class="nav-footer  wrapper">
                 <ul>
                     <li><a href="<?php echo site_url("site/home"); ?>" title="หน้าหลัก KM">หน้าหลัก KM</a>|</li>
@@ -13,15 +16,14 @@
             <div id="footer" class="wrapper">
                 <div class="box-contact">
                     <h4 class="bold">สำนักข่าว กรมประชาสัมพันธ์</h4>
-                    <p>0-91 ถ.เพชรบุรีตัดใหม่ แขวงบางกะปิ เขตห้วยขวาง 10310</p>
+                    <p><?php echo $row->ADD_address; ?></p>
                     <p>
-                        <span class="bold">โทรศัพท์</span> 02-248-8600,
-                        <span class="bold">Fax</span> 02-369-2579
+                        <span class="bold">โทรศัพท์</span> <?php echo $row->ADD_tel; ?>,
+                        <span class="bold">Fax</span> <?php echo $row->ADD_fax; ?>
                     </p>
                     <p>
                         <span class="bold">WEB MASTER</span> : 
-                        <a href="mailto:nnt.thainews@gmail.com" title="nnt.thainews@gmail.com">
-                        nnt.thainews@gmail.com</a>
+                        <a href="<?php echo $row->ADD_web; ?>" title="<?php echo $row->ADD_web; ?>" target="_blank" class="contactus-link"><?php echo $row->ADD_web; ?></a>
                     </p>
                 </div>
 

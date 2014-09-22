@@ -20,6 +20,7 @@ class Model_article extends MY_Model
 						dbo.article.ATC_video,
 						dbo.article.ATC_file,
 						dbo.article.ATC_status,
+						dbo.article.ATC_delete,
 						dbo.article_monthly.AM_month,
 						dbo.article_monthly.AM_year,
 						dbo.article_monthly.AM_view,
@@ -33,10 +34,13 @@ class Model_article extends MY_Model
 						dbo.article_monthly
 						LEFT JOIN dbo.article ON dbo.article.ATC_id = dbo.article_monthly.AM_atc_ref
 						WHERE
+						dbo.article.ATC_activated = '1' AND 
+						dbo.article.ATC_status = '1อนุญาตให้เผยแพร่' AND 
 						dbo.article_monthly.AM_month = '".$month."' AND
 						dbo.article_monthly.AM_year = '".$year."'
 						ORDER BY
 						dbo.article_monthly.AM_view DESC");	
+						//dbo.article_monthly.AM_view DESC");	
 			return $query->result(); 
 	}
 	function get_chkmonth($year,$month,$id){
@@ -56,7 +60,7 @@ class Model_article extends MY_Model
 	}
 	function get_category(){			
 				$this->db->select("CAT_id,CAT_topic");
-				$this->db->where("CAT_activated",1);
+				//$this->db->where("CAT_activated",1);
 				$this->db->order_by("CAT_topic","asc");
 				$query = $this->db->get("category");
 				return $query->result(); 
@@ -75,6 +79,9 @@ class Model_article extends MY_Model
 		if($type!=NULL){
 			$this->db->where("ATC_category_ref",$type);
 		}
+		$this->db->where("ATC_activated",1);
+				$this->db->where("ATC_status","1อนุญาตให้เผยแพร่");
+				$this->db->where("ATC_delete",0);
 		$this->db->order_by("ATC_date","desc");
 		$query = $this->db->get("article");
 		return $query->result(); 
@@ -83,6 +90,9 @@ class Model_article extends MY_Model
 		if($type!=NULL){
 			$this->db->where("ATC_category_ref",$type);
 		}
+		$this->db->where("ATC_activated",1);
+				$this->db->where("ATC_status","1อนุญาตให้เผยแพร่");
+				$this->db->where("ATC_delete",0);
 		$this->db->order_by("ATC_date","desc");
 		$this->db->limit(3);
 		$query = $this->db->get("article");
@@ -96,10 +106,25 @@ class Model_article extends MY_Model
 			return $query->result(); 
 				
 	}
+	function get_review($id){			
+			$this->db->where("ATC_id",$id);
+			$query = $this->db->get("article");
+			return $query->result(); 
+				
+	}
+	function get_reviewid($id){			
+			$this->db->where("ATC_id",$id);
+			//$this->db->where("ATC_activated",1);
+			//$this->db->where("ATC_status","1อนุญาตให้เผยแพร่");
+			$query = $this->db->get("article");
+			return $query->result(); 
+				
+	}
 	function get_resent($id=NULL,$cat=NULL){			
 			$this->db->where("ATC_id<>".$id);
 			if($cat!=NULL)
 			$this->db->where("ATC_category_ref",$cat);
+			$this->db->where("ATC_delete",NULL);
 			$this->db->where("ATC_activated",1);
 			$this->db->where("ATC_status","1อนุญาตให้เผยแพร่");
 			$this->db->limit(3);
@@ -107,83 +132,99 @@ class Model_article extends MY_Model
 			return $query->result(); 
 				
 	}
-	function get_ac($type=NULL,$offset = NULL,$limit = NULL){			
+	function get_ac($type=NULL,$offset = NULL,$limit = NULL){	
+	$squery = "SELECT * FROM dbo.category INNER JOIN dbo.article ON dbo.category.CAT_id = dbo.article.ATC_category_ref WHERE dbo.category.CAT_activated = 1"; 
+	$where = "";
+	$order = "";			
 			if(! is_null($offset) && ! is_null($limit)) {
-				$this->db->where("ATC_activated",1);
-				$this->db->where("ATC_status","1อนุญาตให้เผยแพร่");
+				$where .= " AND ATC_activated = '1'"; 
+				$where .= " AND ATC_status = '1อนุญาตให้เผยแพร่'"; 
+				$where .= " AND ATC_delete = '0'"; 
 				if($type!=NULL&&$type!="suggest"){
-					$this->db->where("ATC_category_ref",$type);
+					$where .= " AND ATC_category_ref = '".$type."'"; 
 				}
 				if($type=="suggest"){
-					$this->db->where("ATC_suggest",1);
+					$where .= " AND ATC_suggest = '1'"; 
 				}
-				$this->db->order_by("ATC_date","desc");
-				$this->db->limit($offset,$limit);
-				$query = $this->db->get("article");
-				//echo $this->db->last_query();
+				if($limit==""){ $limit=0;	}
+				$order = " ORDER BY ATC_date desc";
+				
+				$query = $this->db->query("WITH outer_tbl AS (SELECT ROW_NUMBER() OVER (".$order.") AS ZEND_DB_ROWNUM, * FROM (".$squery.$where.") AS inner_tbl) SELECT * FROM outer_tbl WHERE ZEND_DB_ROWNUM BETWEEN ".$limit." AND ".$offset."");
 				return $query->result(); 
-				//return $this->db->last_query();
+				
 			} else {
 				if($type!=NULL){
-					$this->db->where("ATC_category_ref",$type);
+					$where .= " AND ATC_category_ref = '".$type."'"; 
 				}
-				$this->db->where("ATC_activated",1);
-				$this->db->where("ATC_status","1อนุญาตให้เผยแพร่");
-				$this->db->order_by("ATC_date","desc");
-				$query = $this->db->get("article");
+				$where .= " AND ATC_activated = '1'"; 
+				$where .= " AND ATC_status = '1อนุญาตให้เผยแพร่'"; 
+				$where .= " AND ATC_delete = '0'"; 
+				$order = " ORDER BY ATC_date desc";
+				$query = $this->db->query($squery.$where);
 				return $query->num_rows();
 			}
 	}
 	function get_tag($tag=NULL,$type=NULL,$offset = NULL,$limit = NULL){	
-	
+	$squery = "SELECT * FROM dbo.category INNER JOIN dbo.article ON dbo.category.CAT_id = dbo.article.ATC_category_ref WHERE dbo.category.CAT_activated = 1"; 
+	$where = "";
+	$order = "";			
 			if(! is_null($offset) && ! is_null($limit)) {
-				$this->db->where("ATC_activated",1);
-				$this->db->where("ATC_status","1อนุญาตให้เผยแพร่");
+				$where .= " AND ATC_activated = '1'"; 
+				$where .= " AND ATC_status = '1อนุญาตให้เผยแพร่'"; 
+				$where .= " AND ATC_delete = '0'"; 
 				if($type!=NULL||$type!=""){
-					$this->db->where("ATC_category_ref",$type);
+					$where .= " AND ATC_category_ref = '".$type."'"; 
 				}
 				if($tag != NULL && $tag != ""){
-					$this->db->where("( ATC_tag like '%".$tag."%')");
+					//$this->db->where("( ATC_tag like '%".$tag."%')");
+					$where .= " AND ( ATC_tag like '%".$tag."%')"; 
 				}
-				$this->db->order_by("ATC_date","desc");
-				$this->db->limit($offset,$limit);
-				$query = $this->db->get("article");
-				//echo $this->db->last_query(); exit;
+				if($limit==""){ $limit=0;	}
+				$order = " ORDER BY ATC_date desc";
+				
+				$query = $this->db->query("WITH outer_tbl AS (SELECT ROW_NUMBER() OVER (".$order.") AS ZEND_DB_ROWNUM, * FROM (".$squery.$where.") AS inner_tbl) SELECT * FROM outer_tbl WHERE ZEND_DB_ROWNUM BETWEEN ".$limit." AND ".$offset."");
+				
 				return $query->result(); 
 				//return $this->db->last_query();
 			} else {
 				if($type!=NULL||$type!=""){
-					$this->db->where("ATC_category_ref",$type);
+					$where .= " AND ATC_category_ref = '".$type."'"; 
 				}
 				if($tag != NULL && $tag != ""){
-					$this->db->where("( ATC_tag like '%".$tag."%')");
+					$where .= " AND ( ATC_tag like '%".$tag."%')"; 
 				}
-				$this->db->where("ATC_activated",1);
-				$this->db->where("ATC_status","1อนุญาตให้เผยแพร่");
-				$this->db->order_by("ATC_date","desc");
-				$query = $this->db->get("article");
+				$where .= " AND ATC_activated = '1'"; 
+				$where .= " AND ATC_status = '1อนุญาตให้เผยแพร่'"; 
+				$where .= " AND ATC_delete = '0'"; 
+				$query = $this->db->query($squery.$where);
 				return $query->num_rows();
 			}
 	}
-	function search_ac($txt,$category = NULL,$offset = NULL,$limit = NULL){			
+	function search_ac($txt,$category = NULL,$offset = NULL,$limit = NULL){		
+	$squery = "SELECT * FROM dbo.category INNER JOIN dbo.article ON dbo.category.CAT_id = dbo.article.ATC_category_ref WHERE dbo.category.CAT_activated = 1"; 
+	$where = "";
+	$order = "";		
 			if(! is_null($offset) && ! is_null($limit)) {
-				$this->db->where("ATC_activated",1);
-				$this->db->where("ATC_status","1อนุญาตให้เผยแพร่");
-				if($category != NULL && $category != ""){ $this->db->where("ATC_category_ref",$category); }
-				$this->db->where("( ATC_title like '%".$txt."%' OR ATC_short_desc like '%".$txt."%' OR ATC_desc like '%".$txt."%' OR ATC_tag like '%".$txt."%' )");
-				$this->db->order_by("ATC_date","desc");
-				$this->db->limit($offset,$limit);
-				$query = $this->db->get("article");
-				//echo $this->db->last_query();
+				$where .= " AND ATC_activated = '1'"; 
+				$where .= " AND ATC_status = '1อนุญาตให้เผยแพร่'"; 
+				$where .= " AND ATC_delete = '0'"; 
+				
+				if($category != NULL && $category != ""){ $where .= " AND ATC_category_ref = '".$category."'"; }
+				$where .= " AND ( ATC_title like '%".$txt."%' OR ATC_short_desc like '%".$txt."%' OR ATC_desc like '%".$txt."%' OR ATC_tag like '%".$txt."%' )"; 
+				
+				if($limit==""){ $limit=0;	}
+				$order = " ORDER BY ATC_date desc";
+				
+				$query = $this->db->query("WITH outer_tbl AS (SELECT ROW_NUMBER() OVER (".$order.") AS ZEND_DB_ROWNUM, * FROM (".$squery.$where.") AS inner_tbl) SELECT * FROM outer_tbl WHERE ZEND_DB_ROWNUM BETWEEN ".$limit." AND ".$offset."");
 				return $query->result(); 
 				//return $this->db->last_query();
 			} else {
-				$this->db->where("ATC_activated",1);
-				$this->db->where("ATC_status","1อนุญาตให้เผยแพร่");
-				if($category != NULL && $category != ""){ $this->db->where("ATC_category_ref",$category); }
-				$this->db->where("( ATC_title like '%".$txt."%' OR ATC_short_desc like '%".$txt."%' OR ATC_desc like '%".$txt."%' OR ATC_tag like '%".$txt."%' )");
-				$this->db->order_by("ATC_date","desc");
-				$query = $this->db->get("article");
+				$where .= " AND ATC_activated = '1'"; 
+				$where .= " AND ATC_status = '1อนุญาตให้เผยแพร่'"; 
+				$where .= " AND ATC_delete = '0'"; 
+				if($category != NULL && $category != ""){ $where .= " AND ATC_category_ref = '".$category."'"; }
+				$where .= " AND ( ATC_title like '%".$txt."%' OR ATC_short_desc like '%".$txt."%' OR ATC_desc like '%".$txt."%' OR ATC_tag like '%".$txt."%' )"; 
+				$query = $this->db->query($squery.$where);
 				return $query->num_rows();
 			}
 	}

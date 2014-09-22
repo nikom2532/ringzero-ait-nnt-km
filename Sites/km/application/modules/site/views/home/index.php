@@ -17,7 +17,9 @@
                         <div class="article">
                             <div class="details">
                                 <div class="image">
-                                    <a href="<?php echo site_url('site/article/detail/'.$rowsview->ATC_id); ?>" title="<?php echo $rowsview->ATC_title; ?>"><img src="<?php echo site_url('uploads/article/image/'.$rowsview->ATC_image); ?>" width="309" height="179"/></a>
+                                    <a href="<?php echo site_url('site/article/detail/'.$rowsview->ATC_id); ?>" title="<?php echo $rowsview->ATC_title; ?>">
+                                    <img src="<?php echo str_replace(";","",$rowsview->ATC_image); ?>" onerror="this.src='<?php echo site_url('asset/site/images/picDefalt.png'); ?>';" width="309" height="179"/>
+                                    </a>
                                 </div>
                                 <div class="refference">
                                     <p>
@@ -66,7 +68,9 @@ tag : <?php echo str_replace($this->session->userdata("search_tag"),"*".$this->s
                         <div class="article">
                             <div class="details">
                                 <div class="image">
-                                    <a href="<?php echo site_url('site/article/detail/'.$rowsrecom->ATC_id); ?>" title="<?php echo $rowsrecom->ATC_title; ?>"><img src="<?php echo site_url('uploads/article/image/'.$rowsrecom->ATC_image); ?>" width="309" height="179"/></a>
+                                    <a href="<?php echo site_url('site/article/detail/'.$rowsrecom->ATC_id); ?>" title="<?php echo $rowsrecom->ATC_title; ?>">
+                                    <img src="<?php echo str_replace(";","",$rowsrecom->ATC_image); ?>" onerror="this.src='<?php echo site_url('asset/site/images/picDefalt.png'); ?>';" width="309" height="179"/>
+                                   </a>
                                 </div>
                                 <div class="refference">
                                     <p>
@@ -112,7 +116,9 @@ tag : <?php echo str_replace($this->session->userdata("search_tag"),"*".$this->s
                         <div class="article">
                             <div class="details">
                                 <div class="image">
-                                    <a href="<?php echo site_url('site/article/detail/'.$rowsarticle->ATC_id); ?>" title="<?php echo $rowsarticle->ATC_title; ?>"><img src="<?php echo site_url('uploads/article/image/'.$rowsarticle->ATC_image); ?>" width="151" height="95"/></a>
+                                    <a href="<?php echo site_url('site/article/detail/'.$rowsarticle->ATC_id); ?>" title="<?php echo $rowsarticle->ATC_title; ?>">
+                                    <img src="<?php echo str_replace(";","",$rowsarticle->ATC_image); ?>" onerror="this.src='<?php echo site_url('asset/site/images/picDefalt.png'); ?>';" width="151" height="95"/>
+                                    </a>
                                 </div>
                                 <div class="refference">
                                     <p>
@@ -163,7 +169,7 @@ tag : <?php echo str_replace($this->session->userdata("search_tag"),"*".$this->s
                                 <div class="refference">
                                     <p>
                                             <span>ผู้เขียน : <?php echo $rowsnews->N_writer;  ?> | </span>
-                                            <span>ผู้เข้าชม : <?php echo $rowsnews->N_Views; ?> | </span>
+                                            <span>ผู้เข้าชม : <?php echo $numview[$rowsnews->N_id]; ?> | </span>
                                             <span><?php echo th_date($rowsnews->N_date->format('Y-m-d'));  ?></span>
                                             
                                         </p>

@@ -97,10 +97,17 @@ class Account extends MY_Controller {
 	}
 	
 	public function create(){	
+	$categorys = $this->model_account->get_category();
+		//$options = array('' => '--- กรุณาเลือกหมวดหมู่บทความ ---');
+		foreach($categorys as $value) {
+			$options[$value->SC07_DepartmentName] = $value->SC07_DepartmentName;
+		}
+	
+		$data['categorys'] = $options;
 		$this->template
 		->set_view('shortcut','backoffice/include/shortcut')
 		->set_view('notices','backoffice/include/notices')
-		->build('backoffice/account/form');
+		->build('backoffice/account/form',$data);
 	}
 	
 	public function save(){	
@@ -140,6 +147,13 @@ class Account extends MY_Controller {
 	
 	public function edit($param1){	
 		$data["result"] = $this->model_account->get_for_update($param1);
+		$categorys = $this->model_account->get_category();
+		//$options = array('' => '--- กรุณาเลือกหมวดหมู่บทความ ---');
+		foreach($categorys as $value) {
+			$options[$value->SC07_DepartmentName] = $value->SC07_DepartmentName;
+		}
+	
+		$data['categorys'] = $options;
 		$this->template
 		 ->set_view('notices','backoffice/include/notices')
 		 ->set_view('shortcut','backoffice/include/shortcut')
